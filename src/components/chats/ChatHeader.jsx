@@ -32,7 +32,7 @@ const ChatHeader = ({setSidebarOpen}) => {
                             <img src="/images/avatar/1.png" className="img-fluid" alt="image" />
                         </div>
                         <div className="d-none d-sm-block">
-                            <div className="fw-bold d-flex align-items-center">Alexandra Della</div>
+                            <div className="fw-bold d-flex align-items-center">Hey Rohit JSN</div>
                             <div className="d-flex align-items-center mt-1">
                                 <span className="wd-7 ht-7 rounded-circle opacity-75 me-2 bg-success"></span>
                                 <span className="fs-9 text-uppercase fw-bold text-success">Active Now</span>

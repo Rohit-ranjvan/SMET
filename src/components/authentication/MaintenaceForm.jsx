@@ -15,7 +15,7 @@ const MaintenaceForm = () => {
                     <button type="submit" className="btn btn-lg btn-primary w-100">Notify Me</button>
                 </div>
             </form>
-            <div className="mt-5 d-flex justify-content-center gap-2">
+            <div className="mt-5 d-flex justify-content-center gap-3">
                 <a href="#" className="avatar-text avatar-md" data-bs-toggle="tooltip" title="Follow on Facebook">
                     <FiFacebook />
                 </a>

@@ -14,7 +14,7 @@ const CustomersStatistics = () => {
             {customerData.map(({ arrowIcon, color, count, icon, percentage, title, trend }, index) => (
                 <div key={index} className="col-xxl-3 col-md-6 customer-header-card">
                     <div className="card stretch stretch-full">
-                        <div className="card-body">
+                        <div className="card-body"> 
                             <div className="d-flex align-items-center justify-content-between">
                                 <div className="d-flex align-items-center gap-3">
                                     <div className={`avatar-text avatar-xl rounded text-white bg-${color}`}>

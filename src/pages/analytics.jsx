@@ -1,7 +1,7 @@
 import React from 'react'
 import PageHeader from '@/components/shared/pageHeader/PageHeader'
 import PageHeaderDate from '@/components/shared/pageHeader/PageHeaderDate'
-import EmailOverview from '@/components/EmailOverview'
+import EmailOverview from '@/components/addcenter'
 import Browser from '@/components/widgetsList/Browser'
 import Remainders from '@/components/widgetsTables/Remainders'
 import GoalMiscellaneous from '@/components/widgetsMiscellaneous/GoalMiscellaneous'
@@ -10,6 +10,7 @@ import VisitorsOverviewChart from '@/components/widgetsCharts/VisitorsOverviewCh
 import SocialMediaStatisticsChart from '@/components/widgetsCharts/SocialMediaStatisticsChart'
 import MarketingChart from '@/components/widgetsCharts/MarketingChart'
 import Footer from '@/components/shared/Footer'
+import Addcenter from '@/components/addcenter'
 
 
 const Analytics = () => {
@@ -20,17 +21,17 @@ const Analytics = () => {
             </PageHeader>
             <div className='main-content'>
                 <div className='row'>
-                    <EmailOverview />
-                    <VisitorsOverviewChart />
-                    <Browser title={"Browser States"} />
-                    <SiteOverviewChart />
-                    <GoalMiscellaneous />
-                    <MarketingChart />
-                    <Remainders title={"Project Remainders"} />
-                    <SocialMediaStatisticsChart />
+                   
+                    {/* <VisitorsOverviewChart /> */}
+                    {/* <Browser title={"Browser States"} /> */}
+                    {/* <SiteOverviewChart /> */}
+                    {/* <GoalMiscellaneous /> */}
+                    {/* <MarketingChart /> */}
+                    {/* <Remainders title={"Project Remainders"} /> */}
+                    {/* <SocialMediaStatisticsChart /> */}
                 </div>
             </div>
-            <Footer />
+            {/* <Footer /> */}
         </>
     )
 }

@@ -16,7 +16,7 @@ const PageHeader = ({ children }) => {
     }
     return (
         <div className="page-header">
-            <div className="page-header-left d-flex align-items-center">
+            {/* <div className="page-header-left d-flex align-items-center">
                 <div className="page-header-title">
                     <h5 className="m-b-10 text-capitalize">{folderName}</h5>
                 </div>
@@ -24,7 +24,7 @@ const PageHeader = ({ children }) => {
                     <li className="breadcrumb-item"><Link to="/">Home</Link></li>
                     <li className="breadcrumb-item text-capitalize">{fileName}</li>
                 </ul>
-            </div>
+            </div> */}
             <div className="page-header-right ms-auto">
                 <div className={`page-header-right-items ${openSidebar ? "page-header-right-open" : ""}`}>
                     <div className="d-flex d-md-none">

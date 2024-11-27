@@ -19,8 +19,8 @@ const OtpVerifyForm = () => {
                     <button type="submit" className="btn btn-lg btn-primary w-100">Validate</button>
                 </div>
                 <div className="mt-5 text-muted">
-                    <span>Didn't get the code</span>
-                    <a href="#">Resend(1/3)</a>
+                    <span>Didn't get the code </span>
+                    <a href="#"> Resend(1/3)</a>
                 </div>
             </form>
         </>

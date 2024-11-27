@@ -1,22 +1,22 @@
 export const menuList = [
     {
         id: 0,
-        name: "dashboards",
+        name: "Centers",
         path: "#",
         icon: 'feather-airplay',
         dropdownMenu: [
             {
                 id: 1,
-                name: "CRM",
+                name: "Create and Display centers",
                 path: "/",
                 subdropdownMenu: false
             },
-            {
-                id: 2,
-                name: "Analytics",
-                path: "/dashboards/analytics",
-                subdropdownMenu: false
-            }
+            // {
+            //     id: 2,
+            //     name: "Display centers",
+            //     path: "/dashboards/analytics",
+            //     subdropdownMenu: false
+            // }
         ]
     },
     {
@@ -370,19 +370,10 @@ export const menuList = [
                 subdropdownMenu: [
                     {
                         id: 1,
-                        name: "Cover",
-                        path: "/authentication/login/cover",
-                    },
-                    {
-                        id: 2,
-                        name: "Minimal",
-                        path: "/authentication/login/minimal",
-                    },
-                    {
-                        id: 3,
                         name: "Creative",
                         path: "/authentication/login/creative",
                     },
+                   
                 ]
             },
             {

@@ -5,12 +5,12 @@ import { Link } from 'react-router-dom'
 const LoginForm = ({ registerPath, resetPath }) => {
     return (
         <>
-            <h2 className="fs-20 fw-bolder mb-4">Login</h2>
+            <h2 className="fs-20 fw-bolder mb-4">login</h2>
             <h4 className="fs-13 fw-bold mb-2">Login to your account</h4>
             <p className="fs-12 fw-medium text-muted">Thank you for get back <strong>Nelel</strong> web applications, let's access our the best recommendation for you.</p>
             <form action="index.html" className="w-100 mt-4 pt-2">
                 <div className="mb-4">
-                    <input type="email" className="form-control" placeholder="Email or Username" defaultValue="wrapcode.info@gmail.com" required />
+                    <input type="email" className="form-control" placeholder="Email or Username" defaultValue="rohitranjavan@gmail.com" required />
                 </div>
                 <div className="mb-3">
                     <input type="password" className="form-control" placeholder="Password" defaultValue="123456" required />
@@ -32,7 +32,7 @@ const LoginForm = ({ registerPath, resetPath }) => {
             </form>
             <div className="w-100 mt-5 text-center mx-auto">
                 <div className="mb-4 border-bottom position-relative"><span className="small py-1 px-3 text-uppercase text-muted bg-white position-absolute translate-middle">or</span></div>
-                <div className="d-flex align-items-center justify-content-center gap-2">
+                {/* <div className="d-flex align-items-center justify-content-center gap-2">
                     <a href="#" className="btn btn-light-brand flex-fill" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Login with Facebook">
                         <FiFacebook size={16} />
                     </a>
@@ -42,7 +42,7 @@ const LoginForm = ({ registerPath, resetPath }) => {
                     <a href="#" className="btn btn-light-brand flex-fill" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Login with Github">
                         <FiGithub size={16} className='text' />
                     </a>
-                </div>
+                </div> */}
             </div>
             <div className="mt-5 text-muted">
                 <span> Don't have an account?</span>

@@ -12,8 +12,9 @@ import PageHeaderDate from '@/components/shared/pageHeader/PageHeaderDate'
 import PageHeader from '@/components/shared/pageHeader/PageHeader'
 import Footer from '@/components/shared/Footer'
 import { projectsDataTwo } from '@/utils/fackData/projectsDataTwo'
+import Addcenter from '@/components/addcenter'
 
-const Home = () => {
+const Center = () => {
     return (
         <>
             <PageHeader >
@@ -21,20 +22,21 @@ const Home = () => {
             </PageHeader>
             <div className='main-content'>
                 <div className='row'>
-                    <SiteOverviewStatistics />
-                    <PaymentRecordChart />
-                    <SalesMiscellaneous isFooterShow={true} dataList={projectsDataTwo} />
-                    <TasksOverviewChart />
-                    <LeadsOverviewChart chartHeight={315} />
-                    <LatestLeads title={"Latest Leads"} />
-                    <Schedule title={"Upcoming Schedule"} />
-                    <Project cardYSpaceClass="hrozintioal-card" borderShow={true} title="Project Status" />
-                    <TeamProgress title={"Team Progress"} footerShow={true} />
+                <Addcenter/>
+                    {/* <SiteOverviewStatistics /> */}
+                    {/* <PaymentRecordChart /> */}
+                    {/* <SalesMiscellaneous isFooterShow={true} dataList={projectsDataTwo} /> */}
+                    {/* <TasksOverviewChart /> */}
+                    {/* <LeadsOverviewChart chartHeight={315} /> */}
+                    {/* <LatestLeads title={"Latest Leads"} /> */}
+                    {/* <Schedule title={"Upcoming Schedule"} /> */}
+                    {/* <Project cardYSpaceClass="hrozintioal-card" borderShow={true} title="Project Status" /> */}
+                    {/* <TeamProgress title={"Team Progress"} footerShow={true} /> */}
                 </div>
             </div>
-            <Footer />
+            {/* <Footer /> */}
         </>
     )
 }
 
-export default Home
+export default Center

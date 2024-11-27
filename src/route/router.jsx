@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import RootLayout from "../layout/root";
-import Home from "../pages/home";
+import Home from "../pages/center";
 import Analytics from "../pages/analytics";
 import ReportsSales from "../pages/reports-sales";
 import ReportsLeads from "../pages/reports-leads";
@@ -68,6 +68,7 @@ import WidgetsTables from "../pages/widgets-tables";
 import WidgetsCharts from "../pages/widgets-charts";
 import WidgetsStatistics from "../pages/widgets-statistics";
 import WidgetsMiscellaneous from "../pages/widgets-miscellaneous";
+import Center from "../pages/center";
 
 export const router = createBrowserRouter([
     {
@@ -76,12 +77,12 @@ export const router = createBrowserRouter([
         children: [
             {
                 path: "/",
-                element: <Home />
+                element: <Center/>
             },
-            {
-                path: "/dashboards/analytics",
-                element: <Analytics />
-            },
+            // {
+            //     path: "/dashboards/analytics",
+            //     element: <Analytics />
+            // },
             {
                 path: "/reports/sales",
                 element: <ReportsSales />

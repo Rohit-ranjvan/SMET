@@ -9,7 +9,7 @@ import topTost from '@/utils/topTost'
 
 const imagePaths = [
     "/images/gallery/1.png",
-    "/images/gallery/2.png",
+     "/images/gallery/2.png",
     "/images/gallery/3.png",
     "/images/gallery/4.png",
     "/images/gallery/5.png",
@@ -26,7 +26,7 @@ const ChatProfileInfo = () => {
     return (
         <div className="offcanvas offcanvas-end userProfileDetails" id="userProfileDetails" aria-hidden="true" tabIndex={-1}>
             <div className="offcanvas-header border-bottom">
-                <h5 className="offcanvas-title">Profile Info</h5>
+                <h5 className="offcanvas-title">About You</h5>
                 <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" />
             </div>
             <div className="offcanvas-body p-0">
