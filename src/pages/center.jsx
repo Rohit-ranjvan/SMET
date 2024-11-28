@@ -17,9 +17,9 @@ import Addcenter from '@/components/addcenter'
 const Center = () => {
     return (
         <>
-            <PageHeader >
+            {/* <PageHeader >
                 <PageHeaderDate />
-            </PageHeader>
+            </PageHeader> */}
             <div className='main-content'>
                 <div className='row'>
                 <Addcenter/>
@@ -40,3 +40,4 @@ const Center = () => {
 }
 
 export default Center
+

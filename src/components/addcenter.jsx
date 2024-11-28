@@ -72,7 +72,7 @@ const Addcenter = () => {
   };
 
   return (
-    <div className="container mt-5">
+    <div className="container mt-1">
       <button
         className={`btn ${showForm ? "btn-danger" : "btn-primary"} mb-4`}
         onClick={() => {

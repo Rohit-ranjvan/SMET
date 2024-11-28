@@ -27,7 +27,7 @@ const LoginForm = ({ registerPath, resetPath }) => {
                     </div>
                 </div>
                 <div className="mt-5">
-                    <button type="submit" className="btn btn-lg btn-primary w-100">Login</button>
+                    <button type="submit" className="btn btn-lg btn-primary w-100"z>Login</button>
                 </div>
             </form>
             <div className="w-100 mt-5 text-center mx-auto">
