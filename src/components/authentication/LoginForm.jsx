@@ -1,8 +1,15 @@
 import React from 'react'
 import { FiFacebook, FiGithub, FiTwitter } from 'react-icons/fi'
 import { Link } from 'react-router-dom'
+import { useNavigate } from "react-router";
 
 const LoginForm = ({ registerPath, resetPath }) => {
+    let navigate = useNavigate();
+
+    const handleLogin = () => {
+        console.log("jhdudhuwduwned");
+        navigate('/home');
+    }
     return (
         <>
             <h2 className="fs-20 fw-bolder mb-4">login</h2>
@@ -27,7 +34,7 @@ const LoginForm = ({ registerPath, resetPath }) => {
                     </div>
                 </div>
                 <div className="mt-5">
-                    <button type="submit" className="btn btn-lg btn-primary w-100"z>Login</button>
+                    <button type="submit" className="btn btn-lg btn-primary w-100" onClick={handleLogin}>Login</button>
                 </div>
             </form>
             <div className="w-100 mt-5 text-center mx-auto">

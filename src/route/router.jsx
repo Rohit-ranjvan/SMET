@@ -71,17 +71,17 @@ import WidgetsMiscellaneous from "../pages/widgets-miscellaneous";
 import Center from "../pages/center";
 
 export const router = createBrowserRouter([
-    // {
-    //     path: "/",
-    //     element: <LoginCreative />,
-        
-    // },
     {
         path: "/",
+        element: <LoginCreative />,
+        
+    },
+    {
+        path: "/home",
         element: <RootLayout />,
         children: [
             {
-                path: "/centers",
+                path: "/home/centers",
                 element: <Center/>
             },
             // {
@@ -89,267 +89,267 @@ export const router = createBrowserRouter([
             //     element: <Analytics />
             // },
             {
-                path: "/reports/sales",
+                path: "/home/reports/sales",
                 element: <ReportsSales />
             },
             {
-                path: "/reports/leads",
+                path: "/home/reports/leads",
                 element: <ReportsLeads />
             },
             {
-                path: "/reports/project",
+                path: "/home/reports/project",
                 element: <ReportsProject />
             },
             {
-                path: "/reports/timesheets",
+                path: "/home/reports/timesheets",
                 element: <ReportsTimesheets />
             },
             {
-                path: "/proposal/list",
+                path: "/home/proposal/list",
                 element: <Proposalist />
             },
             {
-                path: "/proposal/view",
+                path: "/home/proposal/view",
                 element: <ProposalView />
             },
             {
-                path: "/proposal/edit",
+                path: "/home/proposal/edit",
                 element: <ProposalEdit />
             },
             {
-                path: "/proposal/create",
+                path: "/home/proposal/create",
                 element: <ProposalCreate />
             },
             {
-                path: "/payment/list",
+                path: "/home/payment/list",
                 element: <PaymentList />
             },
             {
-                path: "/payment/view",
+                path: "/home/payment/view",
                 element: <PaymentView />
             },
             {
-                path: "/payment/create",
+                path: "/home/payment/create",
                 element: <PaymentCreate />
             },
             {
-                path: "/customers/list",
+                path: "/home/customers/list",
                 element: <CustomersList />
             },
             {
-                path: "/customers/view",
+                path: "/home/customers/view",
                 element: <CustomersView />
             },
             {
-                path: "/customers/create",
+                path: "/home/customers/create",
                 element: <CustomersCreate />
             },
             {
-                path: "/leads/list",
+                path: "/home/leads/list",
                 element: <LeadsList />
             },
             {
-                path: "/leads/view",
+                path: "/home/leads/view",
                 element: <LeadsView />
             },
             {
-                path: "/leads/create",
+                path: "/home/leads/create",
                 element: <LeadsCreate />
             },
             {
-                path: "/projects/list",
+                path: "/home/projects/list",
                 element: <ProjectsList />
             },
             {
-                path: "/projects/view",
+                path: "/home/projects/view",
                 element: <ProjectsView />
             },
             {
-                path: "/projects/create",
+                path: "/home/projects/create",
                 element: <ProjectsCreate />
             },
             {
-                path: "/widgets/lists",
+                path: "/home/widgets/lists",
                 element: <WidgetsLists />
             },
             {
-                path: "/widgets/tables",
+                path: "/home/widgets/tables",
                 element: <WidgetsTables />
             },
             {
-                path: "/widgets/charts",
+                path: "/home/widgets/charts",
                 element: <WidgetsCharts/>
             },
             {
-                path: "/widgets/statistics",
+                path: "/home/widgets/statistics",
                 element: <WidgetsStatistics/>
             },
             {
-                path: "/widgets/miscellaneous",
+                path: "/home/widgets/miscellaneous",
                 element: <WidgetsMiscellaneous/>
             },
             {
-                path: "/help/knowledgebase",
+                path: "/home/help/knowledgebase",
                 element: <HelpKnowledgebase />
             },
 
         ]
     },
     {
-        path: "/",
+        path: "/home",
         element: <LayoutApplications />,
         children: [
             {
-                path: "/applications/chat",
+                path: "/home/applications/chat",
                 element: <AppsChat />
             },
             {
-                path: "/applications/email",
+                path: "/home/applications/email",
                 element: <AppsEmail />
             },
             {
-                path: "/applications/tasks",
+                path: "/home/applications/tasks",
                 element: <AppsTasks />
             },
             {
-                path: "/applications/notes",
+                path: "/home/applications/notes",
                 element: <AppsNotes />
             },
             {
-                path: "/applications/calender",
+                path: "/home/applications/calender",
                 element: <AppsCalender />
             },
             {
-                path: "/applications/storage",
+                path: "/home/applications/storage",
                 element: <AppsStorage />
             },
         ]
     },
     {
-        path: "/",
+        path: "/home",
         element: <LayoutSetting />,
         children: [
             {
-                path: "/settings/ganeral",
+                path: "/home/settings/ganeral",
                 element: <SettingsGaneral />
             },
             {
-                path: "/settings/seo",
+                path: "/home/settings/seo",
                 element: <SettingsSeo />
             },
             {
-                path: "/settings/tags",
+                path: "/home/settings/tags",
                 element: <SettingsTags />
             },
             {
-                path: "/settings/email",
+                path: "/home/settings/email",
                 element: <SettingsEmail />
             },
             {
-                path: "/settings/tasks",
+                path: "/home/settings/tasks",
                 element: <SettingsTasks />
             },
             {
-                path: "/settings/leads",
+                path: "/home/settings/leads",
                 element: <SettingsLeads />
             },
             {
-                path: "/settings/Support",
+                path: "/home/settings/Support",
                 element: <SettingsSupport />
             },
             {
-                path: "/settings/finance",
+                path: "/home/settings/finance",
                 element: <SettingsFinance />
             },
             {
-                path: "/settings/gateways",
+                path: "/home/settings/gateways",
                 element: <SettingsGateways />
             },
             {
-                path: "/settings/customers",
+                path: "/home/settings/customers",
                 element: <SettingsCustomers />
             },
             {
-                path: "/settings/localization",
+                path: "/home/settings/localization",
                 element: <SettingsLocalization />
             },
             {
-                path: "/settings/recaptcha",
+                path: "/home/settings/recaptcha",
                 element: <SettingsRecaptcha />
             },
             {
-                path: "/settings/miscellaneous",
+                path: "/home/settings/miscellaneous",
                 element: <SettingsMiscellaneous />
             },
         ]
     },
     {
-        path: "/",
+        path: "/home",
         element: <LayoutAuth />,
         children: [
            
             {
-                path: "/authentication/login",
+                path: "/home/authentication/login",
                 element: <LoginCreative />
             },
             {
-                path: "/authentication/register/cover",
+                path: "/home/authentication/register/cover",
                 element: <RegisterCover />
             },
             {
-                path: "/authentication/register/minimal",
+                path: "/home/authentication/register/minimal",
                 element: <RegisterMinimal />
             },
             {
-                path: "/authentication/register/creative",
+                path: "/home/authentication/register/creative",
                 element: <RegisterCreative />
             },
             {
-                path: "/authentication/reset/cover",
+                path: "/home/authentication/reset/cover",
                 element: <ResetCover />
             },
             {
-                path: "/authentication/reset/minimal",
+                path: "/home/authentication/reset/minimal",
                 element: <ResetMinimal />
             },
             {
-                path: "/authentication/reset/creative",
+                path: "/home/authentication/reset/creative",
                 element: <ResetCreative />
             },
             {
-                path: "/authentication/404/cover",
+                path: "/home/authentication/404/cover",
                 element: <ErrorCover />
             },
             {
-                path: "/authentication/404/minimal",
+                path: "/home/authentication/404/minimal",
                 element: <ErrorMinimal />
             },
             {
-                path: "/authentication/404/creative",
+                path: "/home/authentication/404/creative",
                 element: <ErrorCreative />
             },
             {
-                path: "/authentication/verify/cover",
+                path: "/home/authentication/verify/cover",
                 element: <OtpCover />
             },
             {
-                path: "/authentication/verify/minimal",
+                path: "/home/authentication/verify/minimal",
                 element: <OtpMinimal />
             },
             {
-                path: "/authentication/verify/creative",
+                path: "/home/authentication/verify/creative",
                 element: <OtpCreative />
             },
             {
-                path: "/authentication/maintenance/cover",
+                path: "/home/authentication/maintenance/cover",
                 element: <MaintenanceCover />
             },
             {
-                path: "/authentication/maintenance/minimal",
+                path: "/home/authentication/maintenance/minimal",
                 element: <MaintenanceMinimal />
             },
             {
-                path: "/authentication/maintenance/creative",
+                path: "/home/authentication/maintenance/creative",
                 element: <MaintenanceCreative />
             },
         ]

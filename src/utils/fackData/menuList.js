@@ -8,7 +8,7 @@ export const menuList = [
             {
                 id: 1,
                 name: "Create and Display centers",
-                path: "/centers",
+                path: "/home/centers",
                 subdropdownMenu: false
             },
            
@@ -23,25 +23,25 @@ export const menuList = [
             {
                 id: 1,
                 name: "Sales Report",
-                path: "/reports/sales",
+                path: "/home/reports/sales",
                 subdropdownMenu: false
             },
             {
                 id: 2,
                 name: "Leads Report",
-                path: "/reports/leads",
+                path: "/home/reports/leads",
                 subdropdownMenu: false
             },
             {
                 id: 3,
                 name: "Project Report",
-                path: "/reports/project",
+                path: "/home/reports/project",
                 subdropdownMenu: false
             },
             {
                 id: 4,
                 name: "Timesheets Report",
-                path: "/reports/timesheets",
+                path: "/home/reports/timesheets",
                 subdropdownMenu: false
             },
 
@@ -56,37 +56,37 @@ export const menuList = [
             {
                 id: 1,
                 name: "Chat",
-                path: "/applications/chat",
+                path: "/home/applications/chat",
                 subdropdownMenu: false
             },
             {
                 id: 2,
                 name: "Email",
-                path: "/applications/email",
+                path: "/home/applications/email",
                 subdropdownMenu: false
             },
             {
                 id: 3,
                 name: "Tasks",
-                path: "/applications/tasks",
+                path: "/home/applications/tasks",
                 subdropdownMenu: false
             },
             {
                 id: 4,
                 name: "Notes",
-                path: "/applications/notes",
+                path: "/home/applications/notes",
                 subdropdownMenu: false
             },
             {
                 id: 5,
                 name: "Storage",
-                path: "/applications/storage",
+                path: "/home/applications/storage",
                 subdropdownMenu: false
             },
             {
                 id: 6,
                 name: "Calender",
-                path: "/applications/calender",
+                path: "/home/applications/calender",
                 subdropdownMenu: false
             },
         ]
@@ -100,25 +100,25 @@ export const menuList = [
             {
                 id: 1,
                 name: "Proposal",
-                path: "/proposal/list",
+                path: "/home/proposal/list",
                 subdropdownMenu: false
             },
             {
                 id: 2,
                 name: "Proposal View",
-                path: "/proposal/view",
+                path: "/home/proposal/view",
                 subdropdownMenu: false
             },
             {
                 id: 3,
                 name: "Proposal Edit",
-                path: "/proposal/edit",
+                path: "/home/proposal/edit",
                 subdropdownMenu: false
             },
             {
                 id: 4,
                 name: "Proposal Create",
-                path: "/proposal/create",
+                path: "/home/proposal/create",
                 subdropdownMenu: false
             },
 
@@ -133,19 +133,19 @@ export const menuList = [
             {
                 id: 1,
                 name: "Payment",
-                path: "/payment/list",
+                path: "/home/payment/list",
                 subdropdownMenu: false
             },
             {
                 id: 2,
                 name: "Invoice View",
-                path: "/payment/view",
+                path: "/home/payment/view",
                 subdropdownMenu: false
             },
             {
                 id: 4,
                 name: "Invoice Create",
-                path: "/payment/create",
+                path: "/home/payment/create",
                 subdropdownMenu: false
             }
         ]
@@ -159,19 +159,19 @@ export const menuList = [
             {
                 id: 1,
                 name: "Customers",
-                path: "/customers/list",
+                path: "/home/customers/list",
                 subdropdownMenu: false
             },
             {
                 id: 2,
                 name: "Customers View",
-                path: "/customers/view",
+                path: "/home/customers/view",
                 subdropdownMenu: false
             },
             {
                 id: 3,
                 name: "Customers Create",
-                path: "/customers/create",
+                path: "/home/customers/create",
                 subdropdownMenu: false
             }
         ]
@@ -185,19 +185,19 @@ export const menuList = [
             {
                 id: 1,
                 name: "Leads",
-                path: "/leads/list",
+                path: "/home/leads/list",
                 subdropdownMenu: false
             },
             {
                 id: 2,
                 name: "Leads View",
-                path: "/leads/view",
+                path: "/home/leads/view",
                 subdropdownMenu: false
             },
             {
                 id: 3,
                 name: "Leads Create",
-                path: "/leads/create",
+                path: "/home/leads/create",
                 subdropdownMenu: false
             }
         ]
@@ -211,19 +211,19 @@ export const menuList = [
             {
                 id: 1,
                 name: "Projects",
-                path: "/projects/list",
+                path: "/home/projects/list",
                 subdropdownMenu: false
             },
             {
                 id: 2,
                 name: "Projects View",
-                path: "/projects/view",
+                path: "/home/projects/view",
                 subdropdownMenu: false
             },
             {
                 id: 3,
                 name: "Projects Create",
-                path: "/projects/create",
+                path: "/home/projects/create",
                 subdropdownMenu: false
             }
         ]
@@ -237,31 +237,31 @@ export const menuList = [
             {
                 id: 1,
                 name: "Lists",
-                path: "/widgets/lists",
+                path: "/home/widgets/lists",
                 subdropdownMenu: false
             },
             {
                 id: 2,
                 name: "Tables",
-                path: "/widgets/tables",
+                path: "/home/widgets/tables",
                 subdropdownMenu: false
             },
             {
                 id: 3,
                 name: "Charts",
-                path: "/widgets/charts",
+                path: "/home/widgets/charts",
                 subdropdownMenu: false
             },
             {
                 id: 4,
                 name: "Statistics",
-                path: "/widgets/statistics",
+                path: "/home/widgets/statistics",
                 subdropdownMenu: false
             },
             {
                 id: 5,
                 name: "Miscellaneous",
-                path: "/widgets/miscellaneous",
+                path: "/home/widgets/miscellaneous",
                 subdropdownMenu: false
             },
         ]
@@ -275,79 +275,79 @@ export const menuList = [
             {
                 id: 1,
                 name: "Ganeral",
-                path: "/settings/ganeral",
+                path: "/home/settings/ganeral",
                 subdropdownMenu: false
             },
             {
                 id: 2,
                 name: "SEO",
-                path: "/settings/seo",
+                path: "/home/settings/seo",
                 subdropdownMenu: false
             },
             {
                 id: 3,
                 name: "Tags",
-                path: "/settings/tags",
+                path: "/home/settings/tags",
                 subdropdownMenu: false
             },
             {
                 id: 4,
                 name: "Email",
-                path: "/settings/email",
+                path: "/home/settings/email",
                 subdropdownMenu: false
             },
             {
                 id: 5,
                 name: "Tasks",
-                path: "/settings/tasks",
+                path: "/home/settings/tasks",
                 subdropdownMenu: false
             },
             {
                 id: 6,
                 name: "Leads",
-                path: "/settings/leads",
+                path: "/home/settings/leads",
                 subdropdownMenu: false
             },
             {
                 id: 7,
                 name: "Support",
-                path: "/settings/Support",
+                path: "/home/settings/Support",
                 subdropdownMenu: false
             },
             {
                 id: 8,
                 name: "Finance",
-                path: "/settings/finance",
+                path: "/home/settings/finance",
                 subdropdownMenu: false
             },
             {
                 id: 9,
                 name: "Gateways",
-                path: "/settings/gateways",
+                path: "/home/settings/gateways",
                 subdropdownMenu: false
             },
             {
                 id: 10,
                 name: "Customers",
-                path: "/settings/customers",
+                path: "/home/settings/customers",
                 subdropdownMenu: false
             },
             {
                 id: 11,
                 name: "Localization",
-                path: "/settings/localization",
+                path: "/home/settings/localization",
                 subdropdownMenu: false
             },
             {
                 id: 12,
                 name: "reCAPTCHA",
-                path: "/settings/recaptcha",
+                path: "/home/settings/recaptcha",
                 subdropdownMenu: false
             },
             {
                 id: 13,
                 name: "Miscellaneous",
-                path: "/settings/miscellaneous",
+                path: "/home/settings/miscellaneous",
                 subdropdownMenu: false
             },
         ]
@@ -366,7 +366,7 @@ export const menuList = [
                     {
                         id: 1,
                         name: "Creative",
-                        path: "/authentication/login",
+                        path: "/home/authentication/login",
                     },
                    
                 ]
@@ -379,17 +379,17 @@ export const menuList = [
                     {
                         id: 1,
                         name: "Cover",
-                        path: "/authentication/register/cover",
+                        path: "/home/authentication/register/cover",
                     },
                     {
                         id: 2,
                         name: "Minimal",
-                        path: "/authentication/register/minimal",
+                        path: "/home/authentication/register/minimal",
                     },
                     {
                         id: 3,
                         name: "Creative",
-                        path: "/authentication/register/creative",
+                        path: "/home/authentication/register/creative",
                     },
                 ]
             },
@@ -401,17 +401,17 @@ export const menuList = [
                     {
                         id: 1,
                         name: "Cover",
-                        path: "/authentication/404/cover",
+                        path: "/home/authentication/404/cover",
                     },
                     {
                         id: 2,
                         name: "Minimal",
-                        path: "/authentication/404/minimal",
+                        path: "/home/authentication/404/minimal",
                     },
                     {
                         id: 3,
                         name: "Creative",
-                        path: "/authentication/404/creative",
+                        path: "/home/authentication/404/creative",
                     },
                 ]
             },
@@ -423,17 +423,17 @@ export const menuList = [
                     {
                         id: 1,
                         name: "Cover",
-                        path: "/authentication/reset/cover",
+                        path: "/home/authentication/reset/cover",
                     },
                     {
                         id: 2,
                         name: "Minimal",
-                        path: "/authentication/reset/minimal",
+                        path: "/home/authentication/reset/minimal",
                     },
                     {
                         id: 3,
                         name: "Creative",
-                        path: "/authentication/reset/creative",
+                        path: "/home/authentication/reset/creative",
                     },
                 ]
             },
@@ -445,17 +445,17 @@ export const menuList = [
                     {
                         id: 1,
                         name: "Cover",
-                        path: "/authentication/verify/cover",
+                        path: "/home/authentication/verify/cover",
                     },
                     {
                         id: 2,
                         name: "Minimal",
-                        path: "/authentication/verify/minimal",
+                        path: "/home/authentication/verify/minimal",
                     },
                     {
                         id: 3,
                         name: "Creative",
-                        path: "/authentication/verify/creative",
+                        path: "/home/authentication/verify/creative",
                     },
                 ]
             },
@@ -467,17 +467,17 @@ export const menuList = [
                     {
                         id: 1,
                         name: "Cover",
-                        path: "/authentication/maintenance/cover",
+                        path: "/home/authentication/maintenance/cover",
                     },
                     {
                         id: 2,
                         name: "Minimal",
-                        path: "/authentication/maintenance/minimal",
+                        path: "/home/authentication/maintenance/minimal",
                     },
                     {
                         id: 3,
                         name: "Creative",
-                        path: "/authentication/maintenance/creative",
+                        path: "/home/authentication/maintenance/creative",
                     },
                 ]
             },
@@ -498,13 +498,13 @@ export const menuList = [
             {
                 id: 2,
                 name: "KnowledgeBase",
-                path: "/help/knowledgebase",
+                path: "/home/help/knowledgebase",
                 subdropdownMenu: false
             },
             {
                 id: 3,
                 name: "Documentations",
-                path: "/documentations",
+                path: "/home/documentations",
                 subdropdownMenu: false
             }
         ]
