@@ -76,7 +76,7 @@ export const router = createBrowserRouter([
         element: <RootLayout />,
         children: [
             {
-                path: "/",
+                path: "/centers",
                 element: <Center/>
             },
             // {
@@ -282,16 +282,9 @@ export const router = createBrowserRouter([
         path: "/",
         element: <LayoutAuth />,
         children: [
+           
             {
-                path: "/authentication/login/cover",
-                element: <LoginCover />
-            },
-            {
-                path: "/authentication/login/minimal",
-                element: <LoginMinimal />
-            },
-            {
-                path: "/authentication/login/creative",
+                path: "/authentication/login",
                 element: <LoginCreative />
             },
             {

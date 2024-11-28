@@ -3,20 +3,15 @@ export const menuList = [
         id: 0,
         name: "Centers",
         path: "#",
-        icon: 'feather-airplay',
+        icon: 'feather-map-pin',
         dropdownMenu: [
             {
                 id: 1,
                 name: "Create and Display centers",
-                path: "/",
+                path: "/centers",
                 subdropdownMenu: false
             },
-            // {
-            //     id: 2,
-            //     name: "Display centers",
-            //     path: "/dashboards/analytics",
-            //     subdropdownMenu: false
-            // }
+           
         ]
     },
     {
@@ -371,7 +366,7 @@ export const menuList = [
                     {
                         id: 1,
                         name: "Creative",
-                        path: "/authentication/login/creative",
+                        path: "/authentication/login",
                     },
                    
                 ]
