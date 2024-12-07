@@ -1,26 +1,70 @@
-import React from 'react'
-import { FiFacebook, FiGithub, FiTwitter } from 'react-icons/fi'
-import { Link } from 'react-router-dom'
+import React, { useState } from 'react';
+import { FiFacebook, FiGithub, FiTwitter } from 'react-icons/fi';
+import { Link } from 'react-router-dom';
 import { useNavigate } from "react-router";
+import axios from "axios";
 
 const LoginForm = ({ registerPath, resetPath }) => {
     let navigate = useNavigate();
+    const [credentials, setCredentials] = useState({
+        email: "admin", // Default email for testing
+        password: "admin@123",              // Default password for testing
+    });
+    const [errorMessage, setErrorMessage] = useState("");
 
-    const handleLogin = () => {
-        console.log("jhdudhuwduwned");
-        navigate('/home');
-    }
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setCredentials({ ...credentials, [name]: value });
+    };
+
+    const handleLogin =  (e) => {
+        e.preventDefault();
+        try {
+            const response =  axios.post(`${import.meta.env.VITE_SOME_KEY}/API/V1/authenticate`, credentials, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            console.log("Login Success:", response.data);
+            localStorage.setItem('token', response.data.token);
+            alert("Login successful!");
+            navigate('/home');
+        } catch (error) {
+           
+            console.error("Login Error:", error.response?.data || error.message);
+            setErrorMessage(error.response?.data?.message || "Failed to login. Please try again.");
+        }
+    };
+
     return (
         <>
-            <h2 className="fs-20 fw-bolder mb-4">login</h2>
+            <h2 className="fs-20 fw-bolder mb-4">Login</h2>
             <h4 className="fs-13 fw-bold mb-2">Login to your account</h4>
-            <p className="fs-12 fw-medium text-muted">Thank you for get back <strong>Nelel</strong> web applications, let's access our the best recommendation for you.</p>
-            <form action="index.html" className="w-100 mt-4 pt-2">
+            <p className="fs-12 fw-medium text-muted">Thank you for getting back to <strong>Nelel</strong> web applications. Let's access our best recommendations for you.</p>
+            {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
+            <form className="w-100 mt-4 pt-2" onSubmit={handleLogin}>
                 <div className="mb-4">
-                    <input type="email" className="form-control" placeholder="Email or Username" defaultValue="rohitranjavan@gmail.com" required />
+                    <input
+                        type="text"
+                        className="form-control"
+                        name="text"
+                        value={credentials.text}
+                        onChange={handleInputChange}
+                        placeholder="Email or Username"
+                        required
+                    />
                 </div>
                 <div className="mb-3">
-                    <input type="password" className="form-control" placeholder="Password" defaultValue="123456" required />
+                    <input
+                        type="password"
+                        className="form-control"
+                        name="password"
+                        value={credentials.password}
+                        onChange={handleInputChange}
+                        placeholder="Password"
+                        required
+                    />
                 </div>
                 <div className="d-flex align-items-center justify-content-between">
                     <div>
@@ -38,25 +82,16 @@ const LoginForm = ({ registerPath, resetPath }) => {
                 </div>
             </form>
             <div className="w-100 mt-5 text-center mx-auto">
-                <div className="mb-4 border-bottom position-relative"><span className="small py-1 px-3 text-uppercase text-muted bg-white position-absolute translate-middle">or</span></div>
-                {/* <div className="d-flex align-items-center justify-content-center gap-2">
-                    <a href="#" className="btn btn-light-brand flex-fill" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Login with Facebook">
-                        <FiFacebook size={16} />
-                    </a>
-                    <a href="#" className="btn btn-light-brand flex-fill" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Login with Twitter">
-                        <FiTwitter size={16} />
-                    </a>
-                    <a href="#" className="btn btn-light-brand flex-fill" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Login with Github">
-                        <FiGithub size={16} className='text' />
-                    </a>
-                </div> */}
+                <div className="mb-4 border-bottom position-relative">
+                    <span className="small py-1 px-3 text-uppercase text-muted bg-white position-absolute translate-middle">or</span>
+                </div>
             </div>
             <div className="mt-5 text-muted">
                 <span> Don't have an account?</span>
                 <Link to={registerPath} className="fw-bold"> Create an Account</Link>
             </div>
         </>
-    )
-}
+    );
+};
 
-export default LoginForm
+export default LoginForm;

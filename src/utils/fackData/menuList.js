@@ -16,14 +16,14 @@ export const menuList = [
     },
     {
         id: 1,
-        name: "reports",
+        name: "Youths",
         path: "#",
         icon: 'feather-cast',
         dropdownMenu: [
             {
                 id: 1,
-                name: "Sales Report",
-                path: "/home/reports/sales",
+                name: "Register Youth",
+                path: "/home/youths/register-youth",
                 subdropdownMenu: false
             },
             {

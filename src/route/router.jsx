@@ -89,7 +89,7 @@ export const router = createBrowserRouter([
             //     element: <Analytics />
             // },
             {
-                path: "/home/reports/sales",
+                path: "/home/youths/register-youth",
                 element: <ReportsSales />
             },
             {

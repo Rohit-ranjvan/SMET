@@ -18,14 +18,14 @@ const ReportsSales = () => {
       <div className='main-content'>
         <div className='row'>
           <EstimateStatisticsTwo/>
-          <SalesPipelineChart isFooterShow={true}/>
-          <ForecastRevenueMiscellaneous />
-          <ProjectAssingeMiscellaneous />
-          <EstimateAreaChartThree />
-          <LeadsStatus title={"Contact Leads"} progressFullHeight={true}/>
+          {/* <SalesPipelineChart isFooterShow={true}/> */}
+          {/* <ForecastRevenueMiscellaneous /> */}
+          {/* <ProjectAssingeMiscellaneous /> */}
+          {/* <EstimateAreaChartThree /> */}
+          {/* <LeadsStatus title={"Contact Leads"} progressFullHeight={true}/> */}
         </div>
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </>
   )
 }
