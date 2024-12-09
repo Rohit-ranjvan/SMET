@@ -24,6 +24,7 @@ const PageHeaderWidgets = ({ onFilterChange }) => {
 
     return (
         <div className="d-flex align-items-center gap-2 page-header-right-items-wrapper">
+            {/* Filter Dropdown */}
             <div className="filter-dropdown">
                 <Link
                     className="btn btn-md btn-light-brand"
@@ -49,6 +50,8 @@ const PageHeaderWidgets = ({ onFilterChange }) => {
                     ))}
                 </div>
             </div>
+
+            {/* Add Widgets Button */}
             <a href="#" className="btn btn-primary">
                 <FiPlus size={16} className='me-2' />
                 <span>Add Widgets</span>

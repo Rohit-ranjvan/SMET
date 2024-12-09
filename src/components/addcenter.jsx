@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Dropdown } from "react-bootstrap";
-import { FaEdit, FaTrash, FaPlus, FaTimes, FaCity, FaMapMarkerAlt, FaMapPin, FaAddressCard } from "react-icons/fa";
+import { FaEdit, FaTrash, FaPlus, FaTimes, FaCity, FaMapMarkerAlt, FaMapPin, FaAddressCard, FaUser } from "react-icons/fa";
 import "bootstrap/dist/css/bootstrap.min.css";
+import axios from "axios";
 
 const Addcenter = () => {
   const [formData, setFormData] = useState({
@@ -10,13 +11,15 @@ const Addcenter = () => {
     pincode: "",
     landmark: "",
     address: "",
+    centerhead:"",
   });
 
   const [centers, setCenters] = useState([]); // Stores the centers
   const [showForm, setShowForm] = useState(false); // Toggles the form visibility
   const [editMode, setEditMode] = useState(false); // Tracks if we are editing
   const [editIndex, setEditIndex] = useState(null); // Index of the center being edited
-
+  const userToken = localStorage.getItem('token');
+  console.log("Token getItem", userToken);
   // Load centers from localStorage on component mount
   useEffect(() => {
     const savedCenters = JSON.parse(localStorage.getItem("centers"));
@@ -37,25 +40,57 @@ const Addcenter = () => {
   };
 
   // Handle form submission
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (editMode) {
-      // Edit existing center
-      const updatedCenters = centers.map((center, index) =>
-        index === editIndex ? formData : center
-      );
-      setCenters(updatedCenters);
-    } else {
-      // Add new center
-      setCenters([...centers, formData]);
-    }
 
-    // Reset form and close it
-    setFormData({ name: "", city: "", pincode: "", landmark: "", address: "" });
-    setShowForm(false);
-    setEditMode(false);
-    setEditIndex(null);
-  };
+
+const centeradd = async (e) => {
+  e.preventDefault();
+
+  // const apiUrl = "http://137.184.44.26:9091/API/V1/ADD_CENTER";
+
+  try {
+    const response = await axios.post(`${import.meta.env.VITE_SOME_KEY}/API/V1/ADD_CENTER`, formData,{
+      headers: {
+        Authorization: `Bearer ${userToken}`, // Add the token to the Authorization header
+        'Content-Type': 'application/json',  // Add any additional headers if needed
+      },
+    });
+
+    // Check the API response
+    if (response.status === 200 || response.status === 201) {
+      alert("Center added successfully!");
+
+      if (editMode) {
+        // Update existing center in local state
+        const updatedCenters = centers.map((center, index) =>
+          index === editIndex ? formData : center
+        );
+        setCenters(updatedCenters);
+      } else {
+        // Add new center to local state
+        setCenters([...centers, formData]);
+      }
+
+      // Reset form and close it
+      setFormData({
+        name: "",
+        city: "",
+        pincode: "",
+        landmark: "",
+        address: "",
+        centerhead:"",
+      });
+      setShowForm(false);
+      setEditMode(false);
+      setEditIndex(null);
+    } else {
+      alert("Failed to add center. Please try again.");
+    }
+  } catch (error) {
+    console.error("Error adding center:", error);
+    alert("An error occurred. Please check the server or your connection.");
+  }
+};
+
 
   // Handle deleting a center
   const handleDelete = (index) => {
@@ -89,7 +124,7 @@ const Addcenter = () => {
           <h3 className="card-title text-center text-primary mb-4">
             {editMode ? "Edit Center" : "Add New Center"}
           </h3>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={centeradd}>
             <div className="mb-3">
               <label className="form-label">
                 <FaAddressCard className="me-2 text-secondary fs-6" />
@@ -146,6 +181,7 @@ const Addcenter = () => {
                 required
               />
             </div>
+            
             <div className="mb-3">
               <label className="form-label">
                 <FaAddressCard className="me-2 text-secondary fs-6" />
@@ -160,7 +196,21 @@ const Addcenter = () => {
                 required
               ></textarea>
             </div>
-            <button type="submit" className="btn btn-success w-100">
+            <div className="mb-3">
+              <label className="form-label">
+                <FaUser className="me-2 text-secondary fs-6" />
+                CenterHead
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                name="centerhead"
+                value={formData.centerhead}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <button type="submit" className="btn btn-success w-100" onClick={centeradd}>
               {editMode ? "Save Changes" : "Add Center"}
             </button>
           </form>
@@ -195,6 +245,7 @@ const Addcenter = () => {
                   <strong>Pincode:</strong> {center.pincode} <br />
                   <strong>Landmark:</strong> {center.landmark} <br />
                   <strong>Address:</strong> {center.address}
+                  <strong>CenterHead:</strong> {center.centerhead}
                 </p>
               </div>
             </div>

@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { FaUserEdit, FaTrash } from "react-icons/fa";
 
-const EstimateStatisticsTwo = () => {
+const RegisterYouth = () => {
   const [formVisible, setFormVisible] = useState(false);
   const [formData, setFormData] = useState({
     firstName: "",
@@ -24,8 +24,9 @@ const EstimateStatisticsTwo = () => {
   const [editIndex, setEditIndex] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 2;
-
-  // Toggle form visibility
+  const userToken = localStorage.getItem('token');
+  console.log("Token getItem", userToken);
+ // Toggle form visibility
   const toggleForm = () => setFormVisible(!formVisible);
 
   // Handle input changes
@@ -41,16 +42,21 @@ const EstimateStatisticsTwo = () => {
       return false;
     }
     return true;
-  };
+  }; 
 
   // Submit form data to the Register Youth API
-  const handleSubmit = async () => {
+  const registerYouth = async () => {
     if (!validateForm()) return;
-
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_SOME_KEY}/API/V1/REGISTER_YOUTH`,
-        formData
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${userToken}`, // Add the token to the Authorization header
+            'Content-Type': 'application/json',  // Add any additional headers if needed
+          },
+        }
       );
 
       // Update the table data
@@ -88,6 +94,43 @@ const EstimateStatisticsTwo = () => {
     setFormVisible(false);
   };
 
+
+  const updateYouth = async () => {
+    if (!validateForm()) return;
+  
+    try {
+      // Replace {id} with the actual ID from formData
+      const youthId = formData.id; // Ensure 'id' is part of your formData
+      if (!youthId) {
+        alert("Invalid youth ID. Cannot update.");
+        return;
+      }
+  
+      const response = await axios.put(
+        `${import.meta.env.VITE_SOME_KEY}/API/V1/UPDATE_YOUTH/${youthId}`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${userToken}`, // Include user token
+            "Content-Type": "application/json",
+          },
+        }
+      );
+  
+      // Update the table data
+      const updatedData = [...tableData];
+      updatedData[editIndex] = formData;
+      setTableData(updatedData);
+  
+      alert("Youth updated successfully!");
+      resetForm();
+    } catch (error) {
+      console.error("Error during update:", error);
+      alert("Failed to update youth. Please try again.");
+    }
+  };
+  
+
   // Handle row deletion
   const handleDelete = (index) => {
     const filteredData = tableData.filter((_, i) => i !== index);
@@ -117,6 +160,7 @@ const EstimateStatisticsTwo = () => {
     link.href = URL.createObjectURL(blob);
     link.download = "table_data.csv";
     link.click();
+    
   };
 
   // Pagination logic
@@ -135,7 +179,7 @@ const EstimateStatisticsTwo = () => {
           Export to CSV
         </button>
       </div>
-
+  
       {formVisible && (
         <div className="card mb-4">
           <div className="card-header text-center bg-primary text-white">
@@ -157,51 +201,56 @@ const EstimateStatisticsTwo = () => {
             ))}
           </div>
           <div className="card-footer text-end">
-            <button className="btn btn-success" onClick={handleSubmit}>
+            <button
+              className="btn btn-success"
+              onClick={editIndex !== null ? updateYouth : registerYouth}
+            >
               {editIndex !== null ? "Update" : "Register"}
             </button>
           </div>
         </div>
       )}
-
+  
       {tableData.length > 0 && (
         <>
-          <table className="table table-bordered table-hover">
-            <thead className="table-dark text-center">
-              <tr>
-                {Object.keys(formData).map((key) => (
-                  <th key={key}>{key}</th>
-                ))}
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {currentRows.map((data, index) => (
-                <tr key={index}>
-                  {Object.values(data).map((value, i) => (
-                    <td key={i}>{value}</td>
+          <div className="table-responsive">
+            <table className="table table-bordered table-hover">
+              <thead className="table-dark text-center text-white">
+                <tr>
+                  {Object.keys(formData).map((key) => (
+                    <th key={key}>{key}</th>
                   ))}
-                  <td className="text-center">
-                    <button
-                      className="btn btn-warning btn-sm me-2"
-                      title="Edit"
-                      onClick={() => handleEdit(index + indexOfFirstRow)}
-                    >
-                      <FaUserEdit />
-                    </button>
-                    <button
-                      className="btn btn-danger btn-sm"
-                      title="Delete"
-                      onClick={() => handleDelete(index + indexOfFirstRow)}
-                    >
-                      <FaTrash />
-                    </button>
-                  </td>
+                  <th>Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-
+              </thead>
+              <tbody>
+                {currentRows.map((data, index) => (
+                  <tr key={index}>
+                    {Object.values(data).map((value, i) => (
+                      <td key={i}>{value}</td>
+                    ))}
+                    <td className="text-center">
+                      <button
+                        className="btn btn-warning btn-sm me-2"
+                        title="Edit"
+                        onClick={() => handleEdit(index + indexOfFirstRow)}
+                      >
+                        <FaUserEdit />
+                      </button>
+                      <button
+                        className="btn btn-danger btn-sm"
+                        title="Delete"
+                        onClick={() => handleDelete(index + indexOfFirstRow)}
+                      >
+                        <FaTrash />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+  
           <nav>
             <ul className="pagination justify-content-center mt-2">
               {Array.from({ length: totalPages }, (_, i) => i + 1).map(
@@ -227,6 +276,6 @@ const EstimateStatisticsTwo = () => {
       )}
     </div>
   );
-};
+  };
 
-export default EstimateStatisticsTwo;
+export default RegisterYouth;
