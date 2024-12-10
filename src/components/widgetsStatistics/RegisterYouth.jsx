@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaUserEdit, FaTrash } from "react-icons/fa";
 
 const RegisterYouth = () => {
@@ -26,7 +26,23 @@ const RegisterYouth = () => {
   const rowsPerPage = 2;
   const userToken = localStorage.getItem('token');
   console.log("Token getItem", userToken);
- // Toggle form visibility
+
+  // Retrieve table data from localStorage on component mount
+  useEffect(() => {
+    const savedData = localStorage.getItem('tableData');
+    if (savedData) {
+      setTableData(JSON.parse(savedData));
+    }
+  }, []);
+
+  // Save table data to localStorage whenever tableData changes
+  useEffect(() => {
+    if (tableData.length > 0) {
+      localStorage.setItem('tableData', JSON.stringify(tableData));
+    }
+  }, [tableData]);
+
+  // Toggle form visibility
   const toggleForm = () => setFormVisible(!formVisible);
 
   // Handle input changes
@@ -42,7 +58,7 @@ const RegisterYouth = () => {
       return false;
     }
     return true;
-  }; 
+  };
 
   // Submit form data to the Register Youth API
   const registerYouth = async () => {
@@ -94,18 +110,17 @@ const RegisterYouth = () => {
     setFormVisible(false);
   };
 
-
   const updateYouth = async () => {
     if (!validateForm()) return;
-  
+
     try {
-      // Replace {id} with the actual ID from formData
       const youthId = formData.id; // Ensure 'id' is part of your formData
+      console.log("id is ",youthId);
       if (!youthId) {
         alert("Invalid youth ID. Cannot update.");
         return;
       }
-  
+
       const response = await axios.put(
         `${import.meta.env.VITE_SOME_KEY}/API/V1/UPDATE_YOUTH/${youthId}`,
         formData,
@@ -116,12 +131,12 @@ const RegisterYouth = () => {
           },
         }
       );
-  
+
       // Update the table data
       const updatedData = [...tableData];
       updatedData[editIndex] = formData;
       setTableData(updatedData);
-  
+
       alert("Youth updated successfully!");
       resetForm();
     } catch (error) {
@@ -129,7 +144,6 @@ const RegisterYouth = () => {
       alert("Failed to update youth. Please try again.");
     }
   };
-  
 
   // Handle row deletion
   const handleDelete = (index) => {
@@ -160,7 +174,6 @@ const RegisterYouth = () => {
     link.href = URL.createObjectURL(blob);
     link.download = "table_data.csv";
     link.click();
-    
   };
 
   // Pagination logic
@@ -179,10 +192,10 @@ const RegisterYouth = () => {
           Export to CSV
         </button>
       </div>
-  
+
       {formVisible && (
         <div className="card mb-4">
-          <div className="card-header text-center bg-primary text-white">
+          <div className="card-header text-center bg-secondary text-white d-flex justify-content-center">
             <h4 className="mb-0">Youth Registration Form</h4>
           </div>
           <div className="card-body">
@@ -210,72 +223,70 @@ const RegisterYouth = () => {
           </div>
         </div>
       )}
-  
-      {tableData.length > 0 && (
-        <>
-          <div className="table-responsive">
-            <table className="table table-bordered table-hover">
-              <thead className="table-dark text-center text-white">
-                <tr>
-                  {Object.keys(formData).map((key) => (
-                    <th key={key}>{key}</th>
-                  ))}
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {currentRows.map((data, index) => (
-                  <tr key={index}>
-                    {Object.values(data).map((value, i) => (
-                      <td key={i}>{value}</td>
-                    ))}
-                    <td className="text-center">
-                      <button
-                        className="btn btn-warning btn-sm me-2"
-                        title="Edit"
-                        onClick={() => handleEdit(index + indexOfFirstRow)}
-                      >
-                        <FaUserEdit />
-                      </button>
-                      <button
-                        className="btn btn-danger btn-sm"
-                        title="Delete"
-                        onClick={() => handleDelete(index + indexOfFirstRow)}
-                      >
-                        <FaTrash />
-                      </button>
-                    </td>
-                  </tr>
+
+      {tableData.length > 0 || !formVisible ? (
+        <div className="table-responsive">
+          <table className="table table-bordered table-hover">
+            <thead className="table-secondary text-center text-white">
+              <tr>
+                {Object.keys(formData).map((key) => (
+                  <th key={key}>{key}</th>
                 ))}
-              </tbody>
-            </table>
-          </div>
-  
-          <nav>
-            <ul className="pagination justify-content-center mt-2">
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                (pageNumber) => (
-                  <li
-                    key={pageNumber}
-                    className={`page-item ${
-                      pageNumber === currentPage ? "active" : ""
-                    }`}
-                  >
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {currentRows.map((data, index) => (
+                <tr key={index}>
+                  {Object.values(data).map((value, i) => (
+                    <td key={i}>{value}</td>
+                  ))}
+                  <td className="text-center d-flex">
                     <button
-                      className="page-link"
-                      onClick={() => setCurrentPage(pageNumber)}
+                      className="btn btn-warning btn-sm me-2"
+                      title="Edit"
+                      onClick={() => handleEdit(index + indexOfFirstRow)}
                     >
-                      {pageNumber}
+                      <FaUserEdit />
                     </button>
-                  </li>
-                )
-              )}
-            </ul>
-          </nav>
-        </>
-      )}
+                    <button
+                      className="btn btn-danger btn-sm"
+                      title="Delete"
+                      onClick={() => handleDelete(index + indexOfFirstRow)}
+                    >
+                      <FaTrash />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ) : null}
+
+      <nav>
+        <ul className="pagination justify-content-center mt-2">
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+            (pageNumber) => (
+              <li
+                key={pageNumber}
+                className={`page-item ${
+                  pageNumber === currentPage ? "active" : ""
+                }`}
+              >
+                <button
+                  className="page-link"
+                  onClick={() => setCurrentPage(pageNumber)}
+                >
+                  {pageNumber}
+                </button>
+              </li>
+            )
+          )}
+        </ul>
+      </nav>
     </div>
   );
-  };
+};
 
 export default RegisterYouth;

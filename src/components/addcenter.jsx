@@ -42,54 +42,56 @@ const Addcenter = () => {
   // Handle form submission
 
 
-const centeradd = async (e) => {
-  e.preventDefault();
-
-  // const apiUrl = "http://137.184.44.26:9091/API/V1/ADD_CENTER";
-
-  try {
-    const response = await axios.post(`${import.meta.env.VITE_SOME_KEY}/API/V1/ADD_CENTER`, formData,{
-      headers: {
-        Authorization: `Bearer ${userToken}`, // Add the token to the Authorization header
-        'Content-Type': 'application/json',  // Add any additional headers if needed
-      },
-    });
-
-    // Check the API response
-    if (response.status === 200 || response.status === 201) {
-      alert("Center added successfully!");
-
-      if (editMode) {
-        // Update existing center in local state
-        const updatedCenters = centers.map((center, index) =>
-          index === editIndex ? formData : center
-        );
-        setCenters(updatedCenters);
-      } else {
-        // Add new center to local state
-        setCenters([...centers, formData]);
-      }
-
-      // Reset form and close it
-      setFormData({
-        name: "",
-        city: "",
-        pincode: "",
-        landmark: "",
-        address: "",
-        centerhead:"",
+  const centeradd = (e) => {
+    e.preventDefault();
+  
+    // const apiUrl = "http://137.184.44.26:9091/API/V1/ADD_CENTER";
+  
+    axios
+      .post(`${import.meta.env.VITE_SOME_KEY}/API/V1/ADD_CENTER`, formData, {
+        headers: {
+          Authorization: `Bearer ${userToken}`, // Add the token to the Authorization header
+          "Content-Type": "application/json", // Add any additional headers if needed
+        },
+      })
+      .then((response) => {
+        // Check the API response
+        if (response.status === 200 || response.status === 201) {
+          alert("Center added successfully!");
+  
+          if (editMode) {
+            // Update existing center in local state
+            const updatedCenters = centers.map((center, index) =>
+              index === editIndex ? formData : center
+            );
+            setCenters(updatedCenters);
+          } else {
+            // Add new center to local state
+            setCenters([...centers, formData]);
+          }
+  
+          // Reset form and close it
+          setFormData({
+            name: "",
+            city: "",
+            pincode: "",
+            landmark: "",
+            address: "",
+            centerhead: "",
+          });
+          setShowForm(false);
+          setEditMode(false);
+          setEditIndex(null);
+        } else {
+          alert("Failed to add center. Please try again.");
+        }
+      })
+      .catch((error) => {
+        console.error("Error adding center:", error);
+        alert("An error occurred. Please check the server or your connection.");
       });
-      setShowForm(false);
-      setEditMode(false);
-      setEditIndex(null);
-    } else {
-      alert("Failed to add center. Please try again.");
-    }
-  } catch (error) {
-    console.error("Error adding center:", error);
-    alert("An error occurred. Please check the server or your connection.");
-  }
-};
+  };
+  
 
 
   // Handle deleting a center
