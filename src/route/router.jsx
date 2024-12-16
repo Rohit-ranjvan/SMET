@@ -2,7 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import RootLayout from "../layout/root";
 import Home from "../pages/center";
 import Analytics from "../pages/analytics";
-import ReportsSales from "../pages/reports-sales";
+import ReportsSales from "../pages/Youth";
 import ReportsLeads from "../pages/reports-leads";
 import ReportsProject from "../pages/reports-project";
 import AppsChat from "../pages/apps-chat";
@@ -69,7 +69,7 @@ import WidgetsCharts from "../pages/widgets-charts";
 import WidgetsStatistics from "../pages/widgets-statistics";
 import WidgetsMiscellaneous from "../pages/widgets-miscellaneous";
 import Center from "../pages/center";
-import Youth from "../pages/reports-sales";
+import Youth from "../pages/Youth";
 
 export const router = createBrowserRouter([
     {

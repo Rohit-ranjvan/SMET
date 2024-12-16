@@ -2,48 +2,21 @@ export const menuList = [
     {
         id: 0,
         name: "Centers",
-        path: "#",
+        path: "/home/centers",
         icon: 'feather-map-pin',
         dropdownMenu: [
-            {
-                id: 1,
-                name: "Create and Display centers",
-                path: "/home/centers",
-                subdropdownMenu: false
-            },
+            
            
         ]
     },
     {
         id: 1,
         name: "Youths",
-        path: "#",
+        path: "/home/youths/register-youth",
         icon: 'feather-cast',
         dropdownMenu: [
-            {
-                id: 1,
-                name: "Register Youth",
-                path: "/home/youths/register-youth",
-                subdropdownMenu: false
-            },
-            {
-                id: 2,
-                name: "Leads Report",
-                path: "/home/reports/leads",
-                subdropdownMenu: false
-            },
-            {
-                id: 3,
-                name: "Project Report",
-                path: "/home/reports/project",
-                subdropdownMenu: false
-            },
-            {
-                id: 4,
-                name: "Timesheets Report",
-                path: "/home/reports/timesheets",
-                subdropdownMenu: false
-            },
+            
+           
 
         ]
     },

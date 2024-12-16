@@ -64,7 +64,7 @@ const Addcenter = () => {
           setShowModal(false); // Close modal
           setEditMode(false); // Reset to "Add" mode
         } else {
-          
+
           alert('Failed to add center');
         }
       })
