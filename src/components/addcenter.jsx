@@ -1,25 +1,25 @@
 import React, { useState, useEffect } from "react";
-import { Dropdown } from "react-bootstrap";
+import { Dropdown, Modal } from "react-bootstrap";
 import { FaEdit, FaTrash, FaPlus, FaTimes, FaCity, FaMapMarkerAlt, FaMapPin, FaAddressCard, FaUser } from "react-icons/fa";
-import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
 
 const Addcenter = () => {
   const [formData, setFormData] = useState({
     name: "",
     city: "",
-    pincode: "",
+    pincode: 0,
     landmark: "",
     address: "",
-    centerhead:"",
+    centerhead: "",
   });
 
   const [centers, setCenters] = useState([]); // Stores the centers
-  const [showForm, setShowForm] = useState(false); // Toggles the form visibility
+  const [showModal, setShowModal] = useState(false); // Controls the modal visibility
   const [editMode, setEditMode] = useState(false); // Tracks if we are editing
   const [editIndex, setEditIndex] = useState(null); // Index of the center being edited
   const userToken = localStorage.getItem('token');
   console.log("Token getItem", userToken);
+
   // Load centers from localStorage on component mount
   useEffect(() => {
     const savedCenters = JSON.parse(localStorage.getItem("centers"));
@@ -39,60 +39,40 @@ const Addcenter = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  // Handle form submission
+  // Handle form submission (Add or Edit center)
+  const handleSubmit = (e) => {
+    e.preventDefault(); // Prevent the page from refreshing
 
-
-  const centeradd = (e) => {
-    e.preventDefault();
-  
-    // const apiUrl = "http://137.184.44.26:9091/API/V1/ADD_CENTER";
-  
+    // Make the API call using .then() for promise handling
     axios
-      .post(`${import.meta.env.VITE_SOME_KEY}/API/V1/ADD_CENTER`, formData, {
-        headers: {
-          Authorization: `Bearer ${userToken}`, // Add the token to the Authorization header
-          "Content-Type": "application/json", // Add any additional headers if needed
-        },
-      })
+      .post(
+        `${import.meta.env.VITE_SOME_KEY}/API/V1/ADD_CENTER`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${userToken}`, // Include token in the headers
+            "Content-Type": "application/json",
+          },
+        }
+      )
       .then((response) => {
-        // Check the API response
-        if (response.status === 200 || response.status === 201) {
-          alert("Center added successfully!");
-  
-          if (editMode) {
-            // Update existing center in local state
-            const updatedCenters = centers.map((center, index) =>
-              index === editIndex ? formData : center
-            );
-            setCenters(updatedCenters);
-          } else {
-            // Add new center to local state
-            setCenters([...centers, formData]);
-          }
-  
-          // Reset form and close it
-          setFormData({
-            name: "",
-            city: "",
-            pincode: "",
-            landmark: "",
-            address: "",
-            centerhead: "",
-          });
-          setShowForm(false);
-          setEditMode(false);
-          setEditIndex(null);
+        if (response.status === 200) {
+          // Successfully added center
+          console.log('Center added successfully', response.data);
+          setCenters([...centers, formData]); // Add new center to local state
+          setFormData({ name: "", city: "", pincode: 0, landmark: "", address: "", centerhead: "" }); // Clear the form
+          setShowModal(false); // Close modal
+          setEditMode(false); // Reset to "Add" mode
         } else {
-          alert("Failed to add center. Please try again.");
+          
+          alert('Failed to add center');
         }
       })
       .catch((error) => {
         console.error("Error adding center:", error);
-        alert("An error occurred. Please check the server or your connection.");
+        alert('Error adding center. Please try again.');
       });
   };
-  
-
 
   // Handle deleting a center
   const handleDelete = (index) => {
@@ -104,29 +84,35 @@ const Addcenter = () => {
   const handleEdit = (index) => {
     setFormData(centers[index]); // Pre-fill form with existing data
     setEditMode(true);
-    setShowForm(true);
+    setShowModal(true); // Show modal
     setEditIndex(index);
   };
 
   return (
     <div className="container mt-1">
       <button
-        className={`btn ${showForm ? "btn-danger" : "btn-primary"} mb-4`}
+        className={`btn ${showModal ? "btn-danger" : "btn-primary"} mb-4`}
         onClick={() => {
-          setShowForm(!showForm);
+          setShowModal(true); // Show the modal
           setEditMode(false); // Ensure we are in "Add" mode, not edit
-          setFormData({ name: "", city: "", pincode: "", landmark: "", address: "" }); // Reset form
+          setFormData({ name: "", city: "", pincode: 0, landmark: "", address: "", centerhead: "" }); // Reset form
         }}
       >
-        {showForm ? <FaTimes className="me-2"/> : <FaPlus className="me-2"/>} {showForm ? "Close Form" : "Add Center"}
+        {showModal ? <FaTimes className="me-2" /> : <FaPlus className="me-2" />} {showModal ? "Close Form" : "Add Center"}
       </button>
 
-      {showForm && (
-        <div className="card shadow-lg p-4">
-          <h3 className="card-title text-center text-primary mb-4">
-            {editMode ? "Edit Center" : "Add New Center"}
-          </h3>
-          <form onSubmit={centeradd}>
+      {/* Modal for form */}
+      <Modal
+        show={showModal}
+        onHide={() => setShowModal(false)}
+        centered // Ensures modal is centered vertically and horizontally
+        size="lg" // Optional: You can adjust the size of the modal (default is 'sm', 'lg' for larger modal)
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>{editMode ? "Edit Center" : "Add New Center"}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <form onSubmit={handleSubmit}>
             <div className="mb-3">
               <label className="form-label">
                 <FaAddressCard className="me-2 text-secondary fs-6" />
@@ -143,7 +129,7 @@ const Addcenter = () => {
             </div>
             <div className="mb-3">
               <label className="form-label">
-              <FaCity className="me-2 text-secondary fs-6" />
+                <FaCity className="me-2 text-secondary fs-6" />
                 City
               </label>
               <input
@@ -161,7 +147,7 @@ const Addcenter = () => {
                 Pincode
               </label>
               <input
-                type="text"
+                type="number"
                 className="form-control"
                 name="pincode"
                 value={formData.pincode}
@@ -183,7 +169,7 @@ const Addcenter = () => {
                 required
               />
             </div>
-            
+
             <div className="mb-3">
               <label className="form-label">
                 <FaAddressCard className="me-2 text-secondary fs-6" />
@@ -212,12 +198,12 @@ const Addcenter = () => {
                 required
               />
             </div>
-            <button type="submit" className="btn btn-success w-100" onClick={centeradd}>
+            <button type="submit" className="btn btn-success w-100">
               {editMode ? "Save Changes" : "Add Center"}
             </button>
           </form>
-        </div>
-      )}
+        </Modal.Body>
+      </Modal>
 
       <div className="row mt-4">
         {centers.map((center, index) => (
@@ -246,7 +232,7 @@ const Addcenter = () => {
                   <strong>City:</strong> {center.city} <br />
                   <strong>Pincode:</strong> {center.pincode} <br />
                   <strong>Landmark:</strong> {center.landmark} <br />
-                  <strong>Address:</strong> {center.address}
+                  <strong>Address:</strong> {center.address} <br />
                   <strong>CenterHead:</strong> {center.centerhead}
                 </p>
               </div>

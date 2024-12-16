@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { FaUserEdit, FaTrash } from "react-icons/fa";
+import { Modal, Button } from "react-bootstrap"; 
 
 const RegisterYouth = () => {
   const [formVisible, setFormVisible] = useState(false);
@@ -19,17 +20,17 @@ const RegisterYouth = () => {
     teamLeader: true,
     aygcode: "",
   });
-
+  const [youth_id, setYouth_id] = useState(0);
   const [tableData, setTableData] = useState([]);
   const [editIndex, setEditIndex] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 2;
-  const userToken = localStorage.getItem('token');
+  const rowsPerPage = 10;
+  const userToken = localStorage.getItem("token");
   console.log("Token getItem", userToken);
 
   // Retrieve table data from localStorage on component mount
   useEffect(() => {
-    const savedData = localStorage.getItem('tableData');
+    const savedData = localStorage.getItem("tableData");
     if (savedData) {
       setTableData(JSON.parse(savedData));
     }
@@ -38,12 +39,9 @@ const RegisterYouth = () => {
   // Save table data to localStorage whenever tableData changes
   useEffect(() => {
     if (tableData.length > 0) {
-      localStorage.setItem('tableData', JSON.stringify(tableData));
+      localStorage.setItem("tableData", JSON.stringify(tableData));
     }
   }, [tableData]);
-
-  // Toggle form visibility
-  const toggleForm = () => setFormVisible(!formVisible);
 
   // Handle input changes
   const handleInputChange = (e) => {
@@ -60,6 +58,9 @@ const RegisterYouth = () => {
     return true;
   };
 
+  // Toggle the modal visibility
+  const toggleForm = () => setFormVisible(!formVisible);
+
   // Submit form data to the Register Youth API
   const registerYouth = async () => {
     if (!validateForm()) return;
@@ -70,11 +71,11 @@ const RegisterYouth = () => {
         {
           headers: {
             Authorization: `Bearer ${userToken}`, // Add the token to the Authorization header
-            'Content-Type': 'application/json',  // Add any additional headers if needed
+            "Content-Type": "application/json", // Add any additional headers if needed
           },
         }
       );
-
+      console.log("res with register", response);
       // Update the table data
       if (editIndex !== null) {
         const updatedData = [...tableData];
@@ -107,22 +108,24 @@ const RegisterYouth = () => {
       teamLeader: true,
       aygcode: "",
     });
-    setFormVisible(false);
+    setFormVisible(false); // Close the modal
   };
 
+  // Update Youth
   const updateYouth = async () => {
     if (!validateForm()) return;
+    console.log("update data :- ", youth_id);
 
     try {
       const youthId = formData.id; // Ensure 'id' is part of your formData
-      console.log("id is ",youthId);
+
       if (!youthId) {
         alert("Invalid youth ID. Cannot update.");
         return;
       }
 
       const response = await axios.put(
-        `${import.meta.env.VITE_SOME_KEY}/API/V1/UPDATE_YOUTH/${youthId}`,
+        `${import.meta.env.VITE_SOME_KEY}/API/V1/UPDATE_YOUTH/${youth_id}`,
         formData,
         {
           headers: {
@@ -156,10 +159,11 @@ const RegisterYouth = () => {
   };
 
   // Handle row editing
-  const handleEdit = (index) => {
-    setFormData(tableData[index]);
-    setEditIndex(index);
-    setFormVisible(true);
+  const handleEdit = (e) => {
+    setYouth_id(e);
+    setFormData(tableData[e]); // Set the form data for the specific youth
+    setEditIndex(e); // Set the edit index to update the data later
+    setFormVisible(true); // Open the modal
   };
 
   // Export table data to CSV
@@ -185,7 +189,7 @@ const RegisterYouth = () => {
   return (
     <div className="container mt-5">
       <div className="d-flex justify-content-between align-items-center mb-3">
-        <button className="btn btn-primary" onClick={toggleForm}>
+        <button className="btn btn-primary" onClick={() => setFormVisible(true)}>
           {formVisible ? "Close Form" : "Register Youth"}
         </button>
         <button className="btn btn-secondary" onClick={handleExport}>
@@ -193,36 +197,38 @@ const RegisterYouth = () => {
         </button>
       </div>
 
-      {formVisible && (
-        <div className="card mb-4">
-          <div className="card-header text-center bg-secondary text-white d-flex justify-content-center">
-            <h4 className="mb-0">Youth Registration Form</h4>
-          </div>
-          <div className="card-body">
-            {Object.keys(formData).map((key) => (
-              <div className="mb-3" key={key}>
-                <label className="form-label text-capitalize">{key}</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name={key}
-                  value={formData[key]}
-                  onChange={handleInputChange}
-                  placeholder={`Enter ${key}`}
-                />
-              </div>
-            ))}
-          </div>
-          <div className="card-footer text-end">
-            <button
-              className="btn btn-success"
-              onClick={editIndex !== null ? updateYouth : registerYouth}
-            >
-              {editIndex !== null ? "Update" : "Register"}
-            </button>
-          </div>
-        </div>
-      )}
+      {/* Modal for Youth Registration Form */}
+      <Modal show={formVisible} onHide={() => setFormVisible(false)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>{editIndex !== null ? "Edit Youth" : "Register Youth"}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {Object.keys(formData).map((key) => (
+            <div className="mb-3" key={key}>
+              <label className="form-label text-capitalize">{key}</label>
+              <input
+                type="text"
+                className="form-control"
+                name={key}
+                value={formData[key]}
+                onChange={handleInputChange}
+                placeholder={`Enter ${key}`}
+              />
+            </div>
+          ))}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setFormVisible(false)}>
+            Close
+          </Button>
+          <Button
+            variant="primary"
+            onClick={editIndex !== null ? updateYouth : registerYouth}
+          >
+            {editIndex !== null ? "Update" : "Register"}
+          </Button>
+        </Modal.Footer>
+      </Modal>
 
       {tableData.length > 0 || !formVisible ? (
         <div className="table-responsive">
@@ -245,7 +251,7 @@ const RegisterYouth = () => {
                     <button
                       className="btn btn-warning btn-sm me-2"
                       title="Edit"
-                      onClick={() => handleEdit(index + indexOfFirstRow)}
+                      onClick={() => handleEdit(index)}
                     >
                       <FaUserEdit />
                     </button>
@@ -266,23 +272,19 @@ const RegisterYouth = () => {
 
       <nav>
         <ul className="pagination justify-content-center mt-2">
-          {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-            (pageNumber) => (
-              <li
-                key={pageNumber}
-                className={`page-item ${
-                  pageNumber === currentPage ? "active" : ""
-                }`}
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNumber) => (
+            <li
+              key={pageNumber}
+              className={`page-item ${pageNumber === currentPage ? "active" : ""}`}
+            >
+              <button
+                className="page-link"
+                onClick={() => setCurrentPage(pageNumber)}
               >
-                <button
-                  className="page-link"
-                  onClick={() => setCurrentPage(pageNumber)}
-                >
-                  {pageNumber}
-                </button>
-              </li>
-            )
-          )}
+                {pageNumber}
+              </button>
+            </li>
+          ))}
         </ul>
       </nav>
     </div>
