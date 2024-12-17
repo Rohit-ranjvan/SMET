@@ -10,7 +10,7 @@ const Addcenter = () => {
     pincode: 0,
     landmark: "",
     address: "",
-    centerhead: "",
+    centerHead: "",
   });
 
   const [centers, setCenters] = useState([]); // Stores the centers
@@ -20,13 +20,25 @@ const Addcenter = () => {
   const userToken = localStorage.getItem('token');
   console.log("Token getItem", userToken);
 
-  // Load centers from localStorage on component mount
   useEffect(() => {
-    const savedCenters = JSON.parse(localStorage.getItem("centers"));
-    if (savedCenters) {
-      setCenters(savedCenters);
-    }
-  }, []);
+    axios
+      .get(`${import.meta.env.VITE_SOME_KEY}/API/V1/GET_CENTERS`, {
+        headers: {
+          Authorization: `Bearer ${userToken}`, // Include token in headers
+        },
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          setCenters(response.data); // Set centers with the response data
+        } else {
+          console.error('Failed to fetch centers');
+        }
+      })
+      .catch((error) => {
+        console.error('Error fetching centers:', error);
+        alert('Error fetching centers. Please try again.');
+      });
+  }, [userToken]); // Dependency on userToken
 
   // Save centers to localStorage whenever centers array changes
   useEffect(() => {
@@ -43,7 +55,6 @@ const Addcenter = () => {
   const handleSubmit = (e) => {
     e.preventDefault(); // Prevent the page from refreshing
 
-    // Make the API call using .then() for promise handling
     axios
       .post(
         `${import.meta.env.VITE_SOME_KEY}/API/V1/ADD_CENTER`,
@@ -60,11 +71,10 @@ const Addcenter = () => {
           // Successfully added center
           console.log('Center added successfully', response.data);
           setCenters([...centers, formData]); // Add new center to local state
-          setFormData({ name: "", city: "", pincode: 0, landmark: "", address: "", centerhead: "" }); // Clear the form
+          setFormData({ name: "", city: "", pincode: 0, landmark: "", address: "", centerHead: "" }); // Clear the form
           setShowModal(false); // Close modal
           setEditMode(false); // Reset to "Add" mode
         } else {
-
           alert('Failed to add center');
         }
       })
@@ -90,157 +100,160 @@ const Addcenter = () => {
 
   return (
     <div className="container mt-1">
-      <button
-        className={`btn ${showModal ? "btn-danger" : "btn-primary"} mb-4`}
-        onClick={() => {
-          setShowModal(true); // Show the modal
-          setEditMode(false); // Ensure we are in "Add" mode, not edit
-          setFormData({ name: "", city: "", pincode: 0, landmark: "", address: "", centerhead: "" }); // Reset form
-        }}
-      >
-        {showModal ? <FaTimes className="me-2" /> : <FaPlus className="me-2" />} {showModal ? "Close Form" : "Add Center"}
-      </button>
+  <button
+    className={`btn ${showModal ? "btn-danger" : "btn-primary"} mb-4`}
+    onClick={() => {
+      setShowModal(true); // Show the modal
+      setEditMode(false); // Ensure we are in "Add" mode, not edit
+      setFormData({ name: "", city: "", pincode: 0, landmark: "", address: "", centerHead: "" }); // Reset form
+    }}
+  >
+    {showModal ? <FaTimes className="me-2" /> : <FaPlus className="me-2" />} {showModal ? "Close Form" : "Add Center"}
+  </button>
 
-      {/* Modal for form */}
-      <Modal
-        show={showModal}
-        onHide={() => setShowModal(false)}
-        centered // Ensures modal is centered vertically and horizontally
-        size="lg" // Optional: You can adjust the size of the modal (default is 'sm', 'lg' for larger modal)
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>{editMode ? "Edit Center" : "Add New Center"}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <form onSubmit={handleSubmit}>
-            <div className="mb-3">
-              <label className="form-label">
-                <FaAddressCard className="me-2 text-secondary fs-6" />
-                Name
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="mb-3">
-              <label className="form-label">
-                <FaCity className="me-2 text-secondary fs-6" />
-                City
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                name="city"
-                value={formData.city}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="mb-3">
-              <label className="form-label">
-                <FaMapPin className="me-2 text-secondary fs-6" />
-                Pincode
-              </label>
-              <input
-                type="number"
-                className="form-control"
-                name="pincode"
-                value={formData.pincode}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="mb-3">
-              <label className="form-label">
-                <FaMapMarkerAlt className="me-2 text-secondary fs-6" />
-                Landmark
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                name="landmark"
-                value={formData.landmark}
-                onChange={handleChange}
-                required
-              />
-            </div>
+  {/* Modal for form */}
+  <Modal
+    show={showModal}
+    onHide={() => setShowModal(false)}
+    centered
+    size="lg"
+  >
+    <Modal.Header closeButton>
+      <Modal.Title>{editMode ? "Edit Center" : "Add New Center"}</Modal.Title>
+    </Modal.Header>
+    <Modal.Body>
+      <form onSubmit={handleSubmit}>
+        <div className="mb-3">
+          <label className="form-label">
+            <FaAddressCard className="me-2 text-secondary fs-6" />
+            Name
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div className="mb-3">
+          <label className="form-label">
+            <FaCity className="me-2 text-secondary fs-6" />
+            City
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            name="city"
+            value={formData.city}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div className="mb-3">
+          <label className="form-label">
+            <FaMapPin className="me-2 text-secondary fs-6" />
+            Pincode
+          </label>
+          <input
+            type="number"
+            className="form-control"
+            name="pincode"
+            value={formData.pincode}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div className="mb-3">
+          <label className="form-label">
+            <FaMapMarkerAlt className="me-2 text-secondary fs-6" />
+            Landmark
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            name="landmark"
+            value={formData.landmark}
+            onChange={handleChange}
+            required
+          />
+        </div>
 
-            <div className="mb-3">
-              <label className="form-label">
-                <FaAddressCard className="me-2 text-secondary fs-6" />
-                Address
-              </label>
-              <textarea
-                className="form-control"
-                name="address"
-                value={formData.address}
-                onChange={handleChange}
-                rows="3"
-                required
-              ></textarea>
-            </div>
-            <div className="mb-3">
-              <label className="form-label">
-                <FaUser className="me-2 text-secondary fs-6" />
-                CenterHead
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                name="centerhead"
-                value={formData.centerhead}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <button type="submit" className="btn btn-success w-100">
-              {editMode ? "Save Changes" : "Add Center"}
-            </button>
-          </form>
-        </Modal.Body>
-      </Modal>
+        <div className="mb-3">
+          <label className="form-label">
+            <FaAddressCard className="me-2 text-secondary fs-6" />
+            Address
+          </label>
+          <textarea
+            className="form-control"
+            name="address"
+            value={formData.address}
+            onChange={handleChange}
+            rows="3"
+            required
+          ></textarea>
+        </div>
+        <div className="mb-3">
+          <label className="form-label">
+            <FaUser className="me-2 text-secondary fs-6" />
+            CenterHead
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            name="centerHead"
+            value={formData.centerHead}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <button type="submit" className="btn btn-success w-100">
+          {editMode ? "Save Changes" : "Add Center"}
+        </button>
+      </form>
+    </Modal.Body>
+  </Modal>
 
-      <div className="row mt-4">
-        {centers.map((center, index) => (
-          <div className="col-md-4 mb-3" key={index}>
-            <div className="card shadow-lg h-100">
-              <div className="card-body">
-                <div className="d-flex justify-content-between">
-                  <h5 className="card-title text-primary">{center.name}</h5>
-                  <Dropdown>
-                    <Dropdown.Toggle variant="link" bsPrefix="p-0">
-                      ...
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu>
-                      <Dropdown.Item onClick={() => handleEdit(index)}>
-                        <FaEdit className="me-2" />
-                        Edit
-                      </Dropdown.Item>
-                      <Dropdown.Item onClick={() => handleDelete(index)}>
-                        <FaTrash className="me-2 text-danger" />
-                        Delete
-                      </Dropdown.Item>
-                    </Dropdown.Menu>
-                  </Dropdown>
-                </div>
-                <p className="card-text">
-                  <strong>City:</strong> {center.city} <br />
-                  <strong>Pincode:</strong> {center.pincode} <br />
-                  <strong>Landmark:</strong> {center.landmark} <br />
-                  <strong>Address:</strong> {center.address} <br />
-                  <strong>CenterHead:</strong> {center.centerhead}
-                </p>
-              </div>
+  <div className="row mt-4">
+    {centers.map((center, index) => (
+      <div className="col-md-4 mb-3" key={index}>
+        <div className="card shadow-lg h-100">
+          <div className="card-body">
+            <div className="d-flex justify-content-between">
+              <h5 className="card-title text-primary">{center.name}</h5>
+              <Dropdown>
+                <Dropdown.Toggle variant="link" bsPrefix="p-0">
+                  ...
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <Dropdown.Item onClick={() => handleEdit(index)}>
+                    <FaEdit className="me-2" />
+                    Edit
+                  </Dropdown.Item>
+                  <Dropdown.Item onClick={() => handleDelete(index)}>
+                    <FaTrash className="me-2 text-danger" />
+                    Delete
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
             </div>
+            <p className="card-text">
+              <strong>City:</strong> {center.city} <br />
+              <strong>Pincode:</strong> {center.pinCode} <br />
+              <strong>Landmark:</strong> {center.landmark} <br />
+              <strong>Address:</strong> {center.address} <br />
+              <strong>CenterHead:</strong> {center.centerHead.firstName} {center.centerHead.lastName} <br />
+              {/* <strong>CenterHead Email:</strong> {center.centerHead.email} <br /> */}
+              {/* You can display more properties of centerHead as required */}
+            </p>
           </div>
-        ))}
+        </div>
       </div>
-    </div>
+    ))}
+  </div>
+</div>
+
   );
 };
 
