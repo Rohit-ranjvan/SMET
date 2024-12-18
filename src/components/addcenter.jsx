@@ -40,15 +40,42 @@ const Addcenter = () => {
       });
   }, [userToken]); // Dependency on userToken
 
-  // Save centers to localStorage whenever centers array changes
-  useEffect(() => {
-    localStorage.setItem("centers", JSON.stringify(centers));
-  }, [centers]);
+  // Fetch a single center's data for editing
+  const fetchCenterById = (id) => {
+    console.log("Fetching center with ID:", id);
+    axios
+      .get(`${import.meta.env.VITE_SOME_KEY}/API/V1/GET_CENTER/${id}`, {
+        headers: {
+          Authorization: `Bearer ${userToken}`, // Include token in headers
+        },
+      })
+      
+      .then((response) => {
+        if (response.status === 200) {
+          setFormData(response.data); // Set the form data with the center data from the API
+          setShowModal(true); // Open the modal
+          setEditMode(true); // Set to edit mode
+        } else {
+          console.error('Failed to fetch center');
+          alert('Failed to fetch center. Please try again.');
+        }
+      })
+      .catch((error) => {
+        if (error.response) {
+          console.log('Error Response:', error.response.data);
+          alert(error.response.data.message || 'Unauthorized');
+        }
+      });
+      
+      console.log('Authorization token:', `Bearer ${userToken}`);
+  };
+  
 
-  // Handle form field changes
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+  // Handle editing a center
+  const handleEdit = (index) => {
+    const center = centers[index];
+    setEditIndex(index); // Store the index for reference
+    fetchCenterById(center.id); // Fetch the center data by ID
   };
 
   // Handle form submission (Add or Edit center)
@@ -68,192 +95,116 @@ const Addcenter = () => {
       )
       .then((response) => {
         if (response.status === 200) {
-          // Successfully added center
-          console.log('Center added successfully', response.data);
-          setCenters([...centers, formData]); // Add new center to local state
+          // Successfully added or edited center
+          console.log('Center saved successfully', response.data);
+          if (editMode) {
+            // Update the edited center in the local state
+            const updatedCenters = [...centers];
+            updatedCenters[editIndex] = formData; // Update the edited center
+            setCenters(updatedCenters);
+          } else {
+            // Add the new center
+            setCenters([...centers, formData]); // Add new center to local state
+          }
           setFormData({ name: "", city: "", pincode: 0, landmark: "", address: "", centerHead: "" }); // Clear the form
           setShowModal(false); // Close modal
           setEditMode(false); // Reset to "Add" mode
         } else {
-          alert('Failed to add center');
+          alert('Failed to save center');
         }
       })
       .catch((error) => {
-        console.error("Error adding center:", error);
-        alert('Error adding center. Please try again.');
+        console.error("Error saving center:", error);
+        alert('Error saving center. Please try again.');
       });
-  };
-
-  // Handle deleting a center
-  const handleDelete = (index) => {
-    const updatedCenters = centers.filter((_, i) => i !== index);
-    setCenters(updatedCenters);
-  };
-
-  // Handle editing a center
-  const handleEdit = (index) => {
-    setFormData(centers[index]); // Pre-fill form with existing data
-    setEditMode(true);
-    setShowModal(true); // Show modal
-    setEditIndex(index);
   };
 
   return (
     <div className="container mt-1">
-  <button
-    className={`btn ${showModal ? "btn-danger" : "btn-primary"} mb-4`}
-    onClick={() => {
-      setShowModal(true); // Show the modal
-      setEditMode(false); // Ensure we are in "Add" mode, not edit
-      setFormData({ name: "", city: "", pincode: 0, landmark: "", address: "", centerHead: "" }); // Reset form
-    }}
-  >
-    {showModal ? <FaTimes className="me-2" /> : <FaPlus className="me-2" />} {showModal ? "Close Form" : "Add Center"}
-  </button>
+      <button
+        className={`btn ${showModal ? "btn-danger" : "btn-primary"} mb-4`}
+        onClick={() => {
+          setShowModal(true); // Show the modal
+          setEditMode(false); // Ensure we are in "Add" mode, not edit
+          setFormData({ name: "", city: "", pincode: 0, landmark: "", address: "", centerHead: "" }); // Reset form
+        }}
+      >
+        {showModal ? <FaTimes className="me-2" /> : <FaPlus className="me-2" />} {showModal ? "Close Form" : "Add Center"}
+      </button>
 
-  {/* Modal for form */}
-  <Modal
-    show={showModal}
-    onHide={() => setShowModal(false)}
-    centered
-    size="lg"
-  >
-    <Modal.Header closeButton>
-      <Modal.Title>{editMode ? "Edit Center" : "Add New Center"}</Modal.Title>
-    </Modal.Header>
-    <Modal.Body>
-      <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label className="form-label">
-            <FaAddressCard className="me-2 text-secondary fs-6" />
-            Name
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div className="mb-3">
-          <label className="form-label">
-            <FaCity className="me-2 text-secondary fs-6" />
-            City
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            name="city"
-            value={formData.city}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div className="mb-3">
-          <label className="form-label">
-            <FaMapPin className="me-2 text-secondary fs-6" />
-            Pincode
-          </label>
-          <input
-            type="number"
-            className="form-control"
-            name="pincode"
-            value={formData.pincode}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div className="mb-3">
-          <label className="form-label">
-            <FaMapMarkerAlt className="me-2 text-secondary fs-6" />
-            Landmark
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            name="landmark"
-            value={formData.landmark}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div className="mb-3">
-          <label className="form-label">
-            <FaAddressCard className="me-2 text-secondary fs-6" />
-            Address
-          </label>
-          <textarea
-            className="form-control"
-            name="address"
-            value={formData.address}
-            onChange={handleChange}
-            rows="3"
-            required
-          ></textarea>
-        </div>
-        <div className="mb-3">
-          <label className="form-label">
-            <FaUser className="me-2 text-secondary fs-6" />
-            CenterHead
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            name="centerHead"
-            value={formData.centerHead}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <button type="submit" className="btn btn-success w-100">
-          {editMode ? "Save Changes" : "Add Center"}
-        </button>
-      </form>
-    </Modal.Body>
-  </Modal>
-
-  <div className="row mt-4">
-    {centers.map((center, index) => (
-      <div className="col-md-4 mb-3" key={index}>
-        <div className="card shadow-lg h-100">
-          <div className="card-body">
-            <div className="d-flex justify-content-between">
-              <h5 className="card-title text-primary">{center.name}</h5>
-              <Dropdown>
-                <Dropdown.Toggle variant="link" bsPrefix="p-0">
-                  ...
-                </Dropdown.Toggle>
-                <Dropdown.Menu>
-                  <Dropdown.Item onClick={() => handleEdit(index)}>
-                    <FaEdit className="me-2" />
-                    Edit
-                  </Dropdown.Item>
-                  <Dropdown.Item onClick={() => handleDelete(index)}>
-                    <FaTrash className="me-2 text-danger" />
-                    Delete
-                  </Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
+      {/* Modal for form */}
+      <Modal
+        show={showModal}
+        onHide={() => setShowModal(false)}
+        centered
+        size="lg"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>{editMode ? "Edit Center" : "Add New Center"}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <form onSubmit={handleSubmit}>
+            {/* Form fields */}
+            <div className="mb-3">
+              <label className="form-label">
+                <FaAddressCard className="me-2 text-secondary fs-6" />
+                Name
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                name="name"
+                value={formData.name}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                required
+              />
             </div>
-            <p className="card-text">
-              <strong>City:</strong> {center.city} <br />
-              <strong>Pincode:</strong> {center.pinCode} <br />
-              <strong>Landmark:</strong> {center.landmark} <br />
-              <strong>Address:</strong> {center.address} <br />
-              <strong>CenterHead:</strong> {center.centerHead.firstName} {center.centerHead.lastName} <br />
-              {/* <strong>CenterHead Email:</strong> {center.centerHead.email} <br /> */}
-              {/* You can display more properties of centerHead as required */}
-            </p>
-          </div>
-        </div>
-      </div>
-    ))}
-  </div>
-</div>
+            {/* Additional fields here */}
+            <button type="submit" className="btn btn-success w-100">
+              {editMode ? "Save Changes" : "Add Center"}
+            </button>
+          </form>
+        </Modal.Body>
+      </Modal>
 
+      {/* Centers List */}
+      <div className="row mt-4">
+        {centers.map((center, index) => (
+          <div className="col-md-4 mb-3" key={index}>
+            <div className="card shadow-lg h-100">
+              <div className="card-body">
+                <div className="d-flex justify-content-between">
+                  <h5 className="card-title text-primary">{center.name}</h5>
+                  <Dropdown>
+                    <Dropdown.Toggle variant="link" bsPrefix="p-0">
+                      ...
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                      <Dropdown.Item onClick={() => handleEdit(index)}>
+                        <FaEdit className="me-2" />
+                        Edit
+                      </Dropdown.Item>
+                      <Dropdown.Item onClick={() => handleDelete(index)}>
+                        <FaTrash className="me-2 text-danger" />
+                        Delete
+                      </Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </div>
+                <p className="card-text">
+                  <strong>City:</strong> {center.city} <br />
+                  <strong>Pincode:</strong> {center.pinCode} <br />
+                  <strong>Landmark:</strong> {center.landmark} <br />
+                  <strong>Address:</strong> {center.address} <br />
+                  <strong>CenterHead:</strong> {center.centerHead?.firstName || 'Unknown'} {center.centerHead?.lastName || 'Unknown'} <br />
+                  <strong>CenterHead Email:</strong> {center.centerHead?.email || ''} <br />
+                </p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 };
 
