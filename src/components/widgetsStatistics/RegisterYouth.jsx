@@ -19,6 +19,7 @@ const RegisterYouth = () => {
     reference: "",
     groupName: "",
     teamLeader: true,
+    centers:"",
   });
   const [editIndex, setEditIndex] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -125,6 +126,7 @@ const RegisterYouth = () => {
       reference: "",
       groupName: "",
       teamLeader: true,
+      centers:"",
     });
     setFormVisible(false); // Close the modal
   };
@@ -199,6 +201,7 @@ const RegisterYouth = () => {
               <th>Reference</th>
               <th>GroupName</th>
               <th>TeamLeader</th>
+              <th>centers</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -219,6 +222,7 @@ const RegisterYouth = () => {
                 <td>{data.reference}</td>
                 <td>{data.groupName}</td>
                 <td>{data.teamLeader ? "Yes" : "No"}</td>
+                <td>{data.centers}</td>
                 <td className="text-center d-flex">
                   <button
                     className="btn btn-warning btn-sm me-2"
