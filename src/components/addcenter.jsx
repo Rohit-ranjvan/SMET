@@ -18,18 +18,17 @@ const Addcenter = () => {
   const [editMode, setEditMode] = useState(false); // Tracks if we are editing
   const [editIndex, setEditIndex] = useState(null); // Index of the center being edited
   const userToken = localStorage.getItem('token');
-  console.log("Token getItem", userToken);
 
   useEffect(() => {
     axios
       .get(`${import.meta.env.VITE_SOME_KEY}/API/V1/GET_CENTERS`, {
         headers: {
-          Authorization: `Bearer ${userToken}`, // Include token in headers
+          Authorization: `Bearer ${userToken}`,
         },
       })
       .then((response) => {
         if (response.status === 200) {
-          setCenters(response.data); // Set centers with the response data
+          setCenters(response.data);
         } else {
           console.error('Failed to fetch centers');
         }
@@ -38,18 +37,16 @@ const Addcenter = () => {
         console.error('Error fetching centers:', error);
         alert('Error fetching centers. Please try again.');
       });
-  }, [userToken]); // Dependency on userToken
+  }, [userToken]);
 
-  // Fetch a single center's data for editing
+  // Fetch a center's data by ID for editing
   const fetchCenterById = (id) => {
-    console.log("Fetching center with ID:", id);
     axios
       .get(`${import.meta.env.VITE_SOME_KEY}/API/V1/GET_CENTER/${id}`, {
         headers: {
-          Authorization: `Bearer ${userToken}`, // Include token in headers
+          Authorization: `Bearer ${userToken}`,
         },
       })
-      
       .then((response) => {
         if (response.status === 200) {
           setFormData(response.data); // Set the form data with the center data from the API
@@ -61,26 +58,24 @@ const Addcenter = () => {
         }
       })
       .catch((error) => {
-        if (error.response) {
-          console.log('Error Response:', error.response.data);
-          alert(error.response.data.message || 'Unauthorized');
-        }
+        console.error('Error fetching center:', error);
+        alert('Error fetching center. Please try again.');
       });
-      
-      console.log('Authorization token:', `Bearer ${userToken}`);
   };
-  
 
   // Handle editing a center
   const handleEdit = (index) => {
     const center = centers[index];
     setEditIndex(index); // Store the index for reference
     fetchCenterById(center.id); // Fetch the center data by ID
+    setEditMode(true); // Enable edit mode
+    setShowModal(true); // Show the modal
+
   };
 
   // Handle form submission (Add or Edit center)
   const handleSubmit = (e) => {
-    e.preventDefault(); // Prevent the page from refreshing
+    e.preventDefault();
 
     axios
       .post(
@@ -88,25 +83,28 @@ const Addcenter = () => {
         formData,
         {
           headers: {
-            Authorization: `Bearer ${userToken}`, // Include token in the headers
+            Authorization: `Bearer ${userToken}`,
             "Content-Type": "application/json",
           },
         }
       )
       .then((response) => {
         if (response.status === 200) {
-          // Successfully added or edited center
-          console.log('Center saved successfully', response.data);
           if (editMode) {
-            // Update the edited center in the local state
             const updatedCenters = [...centers];
             updatedCenters[editIndex] = formData; // Update the edited center
             setCenters(updatedCenters);
           } else {
-            // Add the new center
-            setCenters([...centers, formData]); // Add new center to local state
+            setCenters([...centers, formData]); // Add new center
           }
-          setFormData({ name: "", city: "", pincode: 0, landmark: "", address: "", centerHead: "" }); // Clear the form
+          setFormData({
+            name: "",
+            city: "",
+            pincode: 0,
+            landmark: "",
+            address: "",
+            centerHead: "",
+          });
           setShowModal(false); // Close modal
           setEditMode(false); // Reset to "Add" mode
         } else {
@@ -124,27 +122,30 @@ const Addcenter = () => {
       <button
         className={`btn ${showModal ? "btn-danger" : "btn-primary"} mb-4`}
         onClick={() => {
-          setShowModal(true); // Show the modal
-          setEditMode(false); // Ensure we are in "Add" mode, not edit
-          setFormData({ name: "", city: "", pincode: 0, landmark: "", address: "", centerHead: "" }); // Reset form
+          setShowModal(true);
+          setEditMode(false); // Ensure we are in "Add" mode
+          setFormData({
+            name: "",
+            city: "",
+            pincode: 0,
+            landmark: "",
+            address: "",
+            centerHead: "",
+          });
         }}
       >
-        {showModal ? <FaTimes className="me-2" /> : <FaPlus className="me-2" />} {showModal ? "Close Form" : "Add Center"}
+        {showModal ? <FaTimes className="me-2" /> : <FaPlus className="me-2" />}
+        {showModal ? "Close Form" : "Add Center"}
       </button>
 
       {/* Modal for form */}
-      <Modal
-        show={showModal}
-        onHide={() => setShowModal(false)}
-        centered
-        size="lg"
-      >
+      <Modal show={showModal} onHide={() => setShowModal(false)} centered size="lg">
         <Modal.Header closeButton>
           <Modal.Title>{editMode ? "Edit Center" : "Add New Center"}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form onSubmit={handleSubmit}>
-            {/* Form fields */}
+            {/* Name field */}
             <div className="mb-3">
               <label className="form-label">
                 <FaAddressCard className="me-2 text-secondary fs-6" />
@@ -159,7 +160,86 @@ const Addcenter = () => {
                 required
               />
             </div>
-            {/* Additional fields here */}
+
+            {/* City field */}
+            <div className="mb-3">
+              <label className="form-label">
+                <FaCity className="me-2 text-secondary fs-6" />
+                City
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                name="city"
+                value={formData.city}
+                onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+                required
+              />
+            </div>
+
+            {/* Pincode field */}
+            <div className="mb-3">
+              <label className="form-label">
+                <FaMapPin className="me-2 text-secondary fs-6" />
+                Pincode
+              </label>
+              <input
+                type="number"
+                className="form-control"
+                name="pincode"
+                value={formData.pincode}
+                onChange={(e) => setFormData({ ...formData, pincode: e.target.value })}
+                required
+              />
+            </div>
+
+            {/* Landmark field */}
+            <div className="mb-3">
+              <label className="form-label">
+                <FaMapMarkerAlt className="me-2 text-secondary fs-6" />
+                Landmark
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                name="landmark"
+                value={formData.landmark}
+                onChange={(e) => setFormData({ ...formData, landmark: e.target.value })}
+              />
+            </div>
+
+            {/* Address field */}
+            <div className="mb-3">
+              <label className="form-label">
+                <FaAddressCard className="me-2 text-secondary fs-6" />
+                Address
+              </label>
+              <textarea
+                className="form-control"
+                name="address"
+                value={formData.address}
+                onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                required
+              />
+            </div>
+
+            {/* Center Head field */}
+            <div className="mb-3">
+              <label className="form-label">
+                <FaUser className="me-2 text-secondary fs-6" />
+                Center Head
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                name="centerHead"
+                value={formData.centerHead}
+                onChange={(e) => setFormData({ ...formData, centerHead: e.target.value })}
+                required
+              />
+            </div>
+
+            {/* Submit button */}
             <button type="submit" className="btn btn-success w-100">
               {editMode ? "Save Changes" : "Add Center"}
             </button>
@@ -196,8 +276,7 @@ const Addcenter = () => {
                   <strong>Pincode:</strong> {center.pinCode} <br />
                   <strong>Landmark:</strong> {center.landmark} <br />
                   <strong>Address:</strong> {center.address} <br />
-                  <strong>CenterHead:</strong> {center.centerHead?.firstName || 'Unknown'} {center.centerHead?.lastName || 'Unknown'} <br />
-                  <strong>CenterHead Email:</strong> {center.centerHead?.email || ''} <br />
+                  <strong>CenterHead:</strong> {center.centerHead?.aygcode || 'Unknown'} <br />
                 </p>
               </div>
             </div>

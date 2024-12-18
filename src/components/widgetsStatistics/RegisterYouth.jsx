@@ -6,7 +6,6 @@ import { Modal, Button } from "react-bootstrap";
 const RegisterYouth = () => {
   const [formVisible, setFormVisible] = useState(false);
   const [formData, setFormData] = useState({
-    id: "",  
     aygcode: "", 
     firstName: "",
     lastName: "",
@@ -26,32 +25,40 @@ const RegisterYouth = () => {
   const rowsPerPage = 10;
   const userToken = localStorage.getItem("token");
 
-  useEffect(() => {
-    const savedData = localStorage.getItem("youthData");
-    if (savedData) {
-      setTableData(JSON.parse(savedData)); 
-    } else {
-      fetchYouthData();
-    }
-  }, []);
+  // useEffect(() => {
+  //   const savedData = localStorage.getItem("youthData");
+  //   if (savedData) {
+  //     setTableData(JSON.parse(savedData)); 
+  //   } else {
+  //     fetchYouthData();
+  //   }
+  // }, []);
 
   // Function to fetch youth data from API
-  const fetchYouthData = async () => {
-    try {
-      const response = await axios.get(
-        `${import.meta.env.VITE_SOME_KEY}/API/V1/GET_ALL_YOUTHS`,
-        {
-          headers: {
-            Authorization: `Bearer ${userToken}`,
-          },
-        }
-      );
-      setTableData(response.data); 
-      localStorage.setItem("youthData", JSON.stringify(response.data)); 
-    } catch (error) {
-      console.error("Error fetching youth data:", error);
+  useEffect(() => {
+    const fetchYouthData = async () => {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_SOME_KEY}/API/V1/GET_ALL_YOUTHS`,
+          {
+            headers: {
+              Authorization: `Bearer ${userToken}`,
+            },
+          }
+        );
+        setTableData(response.data);
+        localStorage.setItem("youthData", JSON.stringify(response.data));
+      } catch (error) {
+        console.error("Error fetching youth data:", error);
+      }
+    };
+
+    if (userToken) {
+      fetchYouthData();
+    } else {
+      console.error("No token found in localStorage");
     }
-  };
+  }, [userToken]);
 
   
   const [tableData, setTableData] = useState([]);
