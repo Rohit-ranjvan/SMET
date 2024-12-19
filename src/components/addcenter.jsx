@@ -10,13 +10,14 @@ const Addcenter = () => {
     pincode: 0,
     landmark: "",
     address: "",
-    centerHead: "",
+    centerHead: "", 
   });
 
-  const [centers, setCenters] = useState([]); // Stores the centers
-  const [showModal, setShowModal] = useState(false); // Controls the modal visibility
-  const [editMode, setEditMode] = useState(false); // Tracks if we are editing
-  const [editIndex, setEditIndex] = useState(null); // Index of the center being edited
+  const [centers, setCenters] = useState([]);
+  const [tlList, setTlList] = useState([]); 
+  const [showModal, setShowModal] = useState(false);
+  const [editMode, setEditMode] = useState(false); 
+  const [editIndex, setEditIndex] = useState(null);
   const userToken = localStorage.getItem('token');
 
   useEffect(() => {
@@ -37,10 +38,28 @@ const Addcenter = () => {
         console.error('Error fetching centers:', error);
         alert('Error fetching centers. Please try again.');
       });
+
+    axios
+      .get('http://137.184.44.26:9091/API/V1/GET_TL', {
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+        },
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          setTlList(response.data); 
+        } else {
+          console.error('Failed to fetch TL data');
+        }
+      })
+      .catch((error) => {
+        console.error('Error fetching TL data:', error);
+        alert('Error fetching TL data. Please try again.');
+      });
   }, [userToken]);
 
-  // Fetch a center's data by ID for editing
   const fetchCenterById = (id) => {
+    console.log("Fetching center with ID:", id);
     axios
       .get(`${import.meta.env.VITE_SOME_KEY}/API/V1/GET_CENTER/${id}`, {
         headers: {
@@ -49,9 +68,9 @@ const Addcenter = () => {
       })
       .then((response) => {
         if (response.status === 200) {
-          setFormData(response.data); // Set the form data with the center data from the API
-          setShowModal(true); // Open the modal
-          setEditMode(true); // Set to edit mode
+          setFormData(response.data);
+          setShowModal(true);
+          setEditMode(true);
         } else {
           console.error('Failed to fetch center');
           alert('Failed to fetch center. Please try again.');
@@ -63,58 +82,89 @@ const Addcenter = () => {
       });
   };
 
-  // Handle editing a center
   const handleEdit = (index) => {
     const center = centers[index];
-    setEditIndex(index); // Store the index for reference
-    fetchCenterById(center.id); // Fetch the center data by ID
-    setEditMode(true); // Enable edit mode
-    setShowModal(true); // Show the modal
-
+    if (center) {
+      setEditIndex(index);
+      fetchCenterById(center.id); 
+      setEditMode(true);
+      setShowModal(true);
+    } else {
+      console.error("No center found at index:", index);
+    }
   };
 
-  // Handle form submission (Add or Edit center)
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    axios
-      .post(
-        `${import.meta.env.VITE_SOME_KEY}/API/V1/ADD_CENTER`,
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${userToken}`,
-            "Content-Type": "application/json",
-          },
-        }
-      )
-      .then((response) => {
-        if (response.status === 200) {
-          if (editMode) {
-            const updatedCenters = [...centers];
-            updatedCenters[editIndex] = formData; // Update the edited center
-            setCenters(updatedCenters);
-          } else {
-            setCenters([...centers, formData]); // Add new center
+    if (editMode) {
+      axios
+        .put(
+          `${import.meta.env.VITE_SOME_KEY}/API/V1/UPDATE_CENTER/${formData.id}`,
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${userToken}`,
+              "Content-Type": "application/json",
+            },
           }
-          setFormData({
-            name: "",
-            city: "",
-            pincode: 0,
-            landmark: "",
-            address: "",
-            centerHead: "",
-          });
-          setShowModal(false); // Close modal
-          setEditMode(false); // Reset to "Add" mode
-        } else {
-          alert('Failed to save center');
-        }
-      })
-      .catch((error) => {
-        console.error("Error saving center:", error);
-        alert('Error saving center. Please try again.');
-      });
+        )
+        .then((response) => {
+          if (response.status === 200) {
+            const updatedCenters = [...centers];
+            updatedCenters[editIndex] = formData; 
+            setCenters(updatedCenters);
+            setFormData({
+              name: "",
+              city: "",
+              pincode: 0,
+              landmark: "",
+              address: "",
+              centerHead: "",
+            });
+            setShowModal(false); 
+            setEditMode(false); 
+          } else {
+            alert('Failed to update center');
+          }
+        })
+        .catch((error) => {
+          console.error("Error updating center:", error);
+          alert('Error updating center. Please try again.');
+        });
+    } else {
+      axios
+        .post(
+          `${import.meta.env.VITE_SOME_KEY}/API/V1/ADD_CENTER`,
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${userToken}`,
+              "Content-Type": "application/json",
+            },
+          }
+        )
+        .then((response) => {
+          if (response.status === 200) {
+            setCenters([...centers, formData]); 
+            setFormData({
+              name: "",
+              city: "",
+              pincode: 0,
+              landmark: "",
+              address: "",
+              centerHead: "",
+            });
+            setShowModal(false); 
+          } else {
+            alert('Failed to save center');
+          }
+        })
+        .catch((error) => {
+          console.error("Error saving center:", error);
+          alert('Error saving center. Please try again.');
+        });
+    }
   };
 
   return (
@@ -123,7 +173,7 @@ const Addcenter = () => {
         className={`btn ${showModal ? "btn-danger" : "btn-primary"} mb-4`}
         onClick={() => {
           setShowModal(true);
-          setEditMode(false); // Ensure we are in "Add" mode
+          setEditMode(false);
           setFormData({
             name: "",
             city: "",
@@ -138,18 +188,16 @@ const Addcenter = () => {
         {showModal ? "Close Form" : "Add Center"}
       </button>
 
-      {/* Modal for form */}
       <Modal show={showModal} onHide={() => setShowModal(false)} centered size="lg">
         <Modal.Header closeButton>
           <Modal.Title>{editMode ? "Edit Center" : "Add New Center"}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form onSubmit={handleSubmit}>
-            {/* Name field */}
             <div className="mb-3">
               <label className="form-label">
-                <FaAddressCard className="me-2 text-secondary fs-6" />
-                Name
+                <FaCity className="me-2 text-secondary fs-6" />
+                Center Name
               </label>
               <input
                 type="text"
@@ -161,7 +209,6 @@ const Addcenter = () => {
               />
             </div>
 
-            {/* City field */}
             <div className="mb-3">
               <label className="form-label">
                 <FaCity className="me-2 text-secondary fs-6" />
@@ -177,7 +224,6 @@ const Addcenter = () => {
               />
             </div>
 
-            {/* Pincode field */}
             <div className="mb-3">
               <label className="form-label">
                 <FaMapPin className="me-2 text-secondary fs-6" />
@@ -193,7 +239,6 @@ const Addcenter = () => {
               />
             </div>
 
-            {/* Landmark field */}
             <div className="mb-3">
               <label className="form-label">
                 <FaMapMarkerAlt className="me-2 text-secondary fs-6" />
@@ -205,10 +250,10 @@ const Addcenter = () => {
                 name="landmark"
                 value={formData.landmark}
                 onChange={(e) => setFormData({ ...formData, landmark: e.target.value })}
+                required
               />
             </div>
 
-            {/* Address field */}
             <div className="mb-3">
               <label className="form-label">
                 <FaAddressCard className="me-2 text-secondary fs-6" />
@@ -223,31 +268,34 @@ const Addcenter = () => {
               />
             </div>
 
-            {/* Center Head field */}
             <div className="mb-3">
               <label className="form-label">
                 <FaUser className="me-2 text-secondary fs-6" />
                 Center Head
               </label>
-              <input
-                type="text"
+              <select
                 className="form-control"
                 name="centerHead"
                 value={formData.centerHead}
                 onChange={(e) => setFormData({ ...formData, centerHead: e.target.value })}
                 required
-              />
+              >
+                <option value="">{formData.centerHead.aygcode}</option>
+                {tlList.map((tl) => (
+                  <option key={tl.id} value={tl.id}>
+                    {tl.aygcode}
+                  </option>
+                ))}
+              </select>
             </div>
 
-            {/* Submit button */}
             <button type="submit" className="btn btn-success w-100">
-              {editMode ? "Save Changes" : "Add Center"}
+              {editMode ? "Update" : "Add Center"}
             </button>
           </form>
         </Modal.Body>
       </Modal>
 
-      {/* Centers List */}
       <div className="row mt-4">
         {centers.map((center, index) => (
           <div className="col-md-4 mb-3" key={index}>

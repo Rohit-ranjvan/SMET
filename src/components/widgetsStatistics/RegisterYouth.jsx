@@ -19,7 +19,7 @@ const RegisterYouth = () => {
     reference: "",
     groupName: "",
     teamLeader: true,
-    centers:"",
+    center:"",
   });
   const [editIndex, setEditIndex] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -35,7 +35,6 @@ const RegisterYouth = () => {
   //   }
   // }, []);
 
-  // Function to fetch youth data from API
   useEffect(() => {
     const fetchYouthData = async () => {
       try {
@@ -79,10 +78,8 @@ const RegisterYouth = () => {
     return true;
   };
 
-  // Toggle the visibility of the form modal
   const toggleForm = () => setFormVisible(!formVisible);
 
-  // Register or update youth in the database
   const registerYouth = async () => {
     if (!validateForm()) return;
 
@@ -98,7 +95,6 @@ const RegisterYouth = () => {
         }
       );
       console.log("Youth registered successfully", response);
-      // Update the table data after successful registration
       setTableData([...tableData, formData]);
       localStorage.setItem("youthData", JSON.stringify([...tableData, formData])); // Update localStorage
       alert("Youth registered successfully!");
@@ -109,7 +105,6 @@ const RegisterYouth = () => {
     }
   };
 
-  // Reset the form after successful submission
   const resetForm = () => {
     setFormData({
       id: "",
@@ -126,19 +121,17 @@ const RegisterYouth = () => {
       reference: "",
       groupName: "",
       teamLeader: true,
-      centers:"",
+      center:"",
     });
-    setFormVisible(false); // Close the modal
+    setFormVisible(false); 
   };
 
-  // Delete youth data
   const handleDelete = (index) => {
     const filteredData = tableData.filter((_, i) => i !== index);
     setTableData(filteredData);
-    localStorage.setItem("youthData", JSON.stringify(filteredData)); // Update localStorage after delete
+    localStorage.setItem("youthData", JSON.stringify(filteredData)); 
   };
 
-  // Pagination logic
   const indexOfLastRow = currentPage * rowsPerPage;
   const indexOfFirstRow = indexOfLastRow - rowsPerPage;
   const currentRows = tableData.slice(indexOfFirstRow, indexOfLastRow);
@@ -152,7 +145,6 @@ const RegisterYouth = () => {
         </button>
       </div>
 
-      {/* Modal for Youth Registration Form */}
       <Modal show={formVisible} onHide={resetForm} centered>
         <Modal.Header closeButton>
           <Modal.Title>{editIndex !== null ? "Edit Youth" : "Register Youth"}</Modal.Title>
@@ -182,7 +174,6 @@ const RegisterYouth = () => {
         </Modal.Footer>
       </Modal>
 
-      {/* Youth Data Table */}
       <div className="table-responsive">
         <table className="table table-bordered table-hover">
           <thead className="table-secondary text-center text-white">
@@ -201,7 +192,7 @@ const RegisterYouth = () => {
               <th>Reference</th>
               <th>GroupName</th>
               <th>TeamLeader</th>
-              <th>centers</th>
+              <th>center</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -222,15 +213,15 @@ const RegisterYouth = () => {
                 <td>{data.reference}</td>
                 <td>{data.groupName}</td>
                 <td>{data.teamLeader ? "Yes" : "No"}</td>
-                <td>{data.centers}</td>
+                <td>{data.center?.name || 'Not available' }</td>
                 <td className="text-center d-flex">
                   <button
                     className="btn btn-warning btn-sm me-2"
                     title="Edit"
                     onClick={() => {
                       setEditIndex(index);
-                      setFormData(data); // Fill form data for editing
-                      setFormVisible(true); // Open the modal
+                      setFormData(data); 
+                      setFormVisible(true); 
                     }}
                   >
                     <FaUserEdit />
@@ -249,7 +240,6 @@ const RegisterYouth = () => {
         </table>
       </div>
 
-      {/* Pagination */}
       <nav>
         <ul className="pagination justify-content-center mt-2">
           {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNumber) => (

@@ -12,7 +12,7 @@ import useBootstrapUtils from '@/hooks/useBootstrapUtils'
 import ChatProfileInfo from '@/components/chats/ChatProfileInfo'
 import ComposeMailPopUp from '@/components/emails/ComposeMailPopup'
 
-const LayoutApplications = () => {
+const Client = () => {
     const pathName = useLocation().pathname
     useBootstrapUtils(pathName)
 
@@ -58,4 +58,4 @@ const LayoutApplications = () => {
     )
 }
 
-export default LayoutApplications
+export default Client

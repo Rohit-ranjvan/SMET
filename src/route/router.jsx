@@ -6,7 +6,7 @@ import ReportsSales from "../pages/Youth";
 import ReportsLeads from "../pages/reports-leads";
 import ReportsProject from "../pages/reports-project";
 import AppsChat from "../pages/apps-chat";
-import LayoutApplications from "../layout/layoutApplications";
+import LayoutApplications from "../layout/client";
 import AppsEmail from "../pages/apps-email";
 import ReportsTimesheets from "../pages/reports-timesheets";
 import LoginCover from "../pages/login-cover";
@@ -70,6 +70,7 @@ import WidgetsStatistics from "../pages/widgets-statistics";
 import WidgetsMiscellaneous from "../pages/widgets-miscellaneous";
 import Center from "../pages/center";
 import Youth from "../pages/Youth";
+import Client from "../layout/client";
 
 export const router = createBrowserRouter([
     {
@@ -198,7 +199,7 @@ export const router = createBrowserRouter([
     },
     {
         path: "/home",
-        element: <LayoutApplications />,
+        element: <Client />,
         children: [
             {
                 path: "/home/applications/chat",

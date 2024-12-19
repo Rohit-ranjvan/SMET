@@ -7,8 +7,8 @@ import axios from "axios";
 const LoginForm = ({ registerPath, resetPath }) => {
     let navigate = useNavigate();
     const [credentials, setCredentials] = useState({
-        usernameOrEmail: "admin", // Default email for testing
-        password: "admin@123",              // Default password for testing
+        usernameOrEmail: "Ds0801", // Default email for testing
+        password: "PHmqW9hg",              // Default password for testing
         // usernameOrEmail: "Ds0801", // Default email for testing
         // password: "PHmqW9hg",              // Default password for testing
     });
@@ -19,25 +19,6 @@ const LoginForm = ({ registerPath, resetPath }) => {
         setCredentials({ ...credentials, [name]: value });
     };
 
-    // const handleLogin =   (e) => {
-    //     e.preventDefault();
-    //     try {
-    //         const response = axios.post(`${import.meta.env.VITE_SOME_KEY}/API/V1/authenticate`, credentials, {
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //             },
-    //         });
-    //         console.log(response);
-    //         // console.log("Login Success:", response.data);
-    //         // localStorage.setItem('token', response.data.token);
-    //         alert("Login successful!");
-    //         navigate('/home');
-    //     } catch (error) {
-           
-    //         console.error("Login Error:", error.response?.data || error.message);
-    //         setErrorMessage(error.response?.data?.message || "Failed to login. Please try again.");
-    //     }
-    // };
     const handleLogin = (e) => {
         e.preventDefault();
         axios
@@ -51,9 +32,8 @@ const LoginForm = ({ registerPath, resetPath }) => {
                 }
             )
             .then((response) => {
-                console.log("Login Success:", response.data.accessToken); // Display response data
+                console.log("Login Success:", response.data.accessToken); 
                 alert("Login successful!");
-                // Save token or handle the response as needed
                 localStorage.setItem('token', response.data.accessToken);
                 navigate('/home');
             })
