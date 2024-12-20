@@ -3,20 +3,21 @@ import { Dropdown, Modal } from "react-bootstrap";
 import { FaEdit, FaTrash, FaPlus, FaTimes, FaCity, FaMapMarkerAlt, FaMapPin, FaAddressCard, FaUser } from "react-icons/fa";
 import axios from "axios";
 
+
 const Addcenter = () => {
   const [formData, setFormData] = useState({
     name: "",
     city: "",
-    pincode: 0,
+    pinCode: 0,
     landmark: "",
     address: "",
-    centerHead: "", 
+    centerHead: "",
   });
 
   const [centers, setCenters] = useState([]);
-  const [tlList, setTlList] = useState([]); 
+  const [tlList, setTlList] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const [editMode, setEditMode] = useState(false); 
+  const [editMode, setEditMode] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
   const userToken = localStorage.getItem('token');
 
@@ -40,14 +41,14 @@ const Addcenter = () => {
       });
 
     axios
-      .get('http://137.184.44.26:9091/API/V1/GET_TL', {
+      .get(`${import.meta.env.VITE_SOME_KEY}/API/V1/GET_TL`, {
         headers: {
           Authorization: `Bearer ${userToken}`,
         },
       })
       .then((response) => {
         if (response.status === 200) {
-          setTlList(response.data); 
+          setTlList(response.data);
         } else {
           console.error('Failed to fetch TL data');
         }
@@ -59,6 +60,7 @@ const Addcenter = () => {
   }, [userToken]);
 
   const fetchCenterById = (id) => {
+
     console.log("Fetching center with ID:", id);
     axios
       .get(`${import.meta.env.VITE_SOME_KEY}/API/V1/GET_CENTER/${id}`, {
@@ -68,7 +70,31 @@ const Addcenter = () => {
       })
       .then((response) => {
         if (response.status === 200) {
-          setFormData(response.data);
+          if (response.data.centerHead == null) {
+            setFormData({
+              ...formData,
+              id: response.data.id,
+              name: response.data.name,
+              city: response.data.city,
+              pinCode: response.data.pinCode,
+              landmark: response.data.landmark,
+              address: response.data.address,
+              centerHead: null,
+            })
+          }
+          else {
+            setFormData({
+              ...formData,
+              id: response.data.id,
+              name: response.data.name,
+              city: response.data.city,
+              pinCode: response.data.pinCode,
+              landmark: response.data.landmark,
+              address: response.data.address,
+              centerHead: response.data.centerHead.aygcode,
+            })
+          }
+          console.log("formdata", response.data);
           setShowModal(true);
           setEditMode(true);
         } else {
@@ -86,7 +112,7 @@ const Addcenter = () => {
     const center = centers[index];
     if (center) {
       setEditIndex(index);
-      fetchCenterById(center.id); 
+      fetchCenterById(center.id);
       setEditMode(true);
       setShowModal(true);
     } else {
@@ -96,7 +122,7 @@ const Addcenter = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    console.log("formData ID", formData.id);
     if (editMode) {
       axios
         .put(
@@ -111,19 +137,44 @@ const Addcenter = () => {
         )
         .then((response) => {
           if (response.status === 200) {
+            console.log("formdata Updated :- ", response)
+            if (response.data.centerHead == null) {
+              setFormData({
+                ...formData,
+                id: response.data.id,
+                name: response.data.name,
+                city: response.data.city,
+                pinCode: response.data.pinCode,
+                landmark: response.data.landmark,
+                address: response.data.address,
+                centerHead: null,
+              })
+            }
+            else {
+              setFormData({
+                ...formData,
+                id: response.data.id,
+                name: response.data.name,
+                city: response.data.city,
+                pinCode: response.data.pinCode,
+                landmark: response.data.landmark,
+                address: response.data.address,
+                centerHead: response.data.centerHead.aygcode,
+              })
+            }
             const updatedCenters = [...centers];
-            updatedCenters[editIndex] = formData; 
+            updatedCenters[editIndex] = formData;
             setCenters(updatedCenters);
             setFormData({
               name: "",
               city: "",
-              pincode: 0,
+              pinCode: 0,
               landmark: "",
               address: "",
               centerHead: "",
             });
-            setShowModal(false); 
-            setEditMode(false); 
+            setShowModal(false);
+            setEditMode(false);
           } else {
             alert('Failed to update center');
           }
@@ -146,16 +197,16 @@ const Addcenter = () => {
         )
         .then((response) => {
           if (response.status === 200) {
-            setCenters([...centers, formData]); 
+            setCenters([...centers, formData]);
             setFormData({
               name: "",
               city: "",
-              pincode: 0,
+              pinCode: 0,
               landmark: "",
               address: "",
               centerHead: "",
             });
-            setShowModal(false); 
+            setShowModal(false);
           } else {
             alert('Failed to save center');
           }
@@ -177,7 +228,7 @@ const Addcenter = () => {
           setFormData({
             name: "",
             city: "",
-            pincode: 0,
+            pinCode: 0,
             landmark: "",
             address: "",
             centerHead: "",
@@ -227,14 +278,14 @@ const Addcenter = () => {
             <div className="mb-3">
               <label className="form-label">
                 <FaMapPin className="me-2 text-secondary fs-6" />
-                Pincode
+                pincode
               </label>
               <input
                 type="number"
                 className="form-control"
-                name="pincode"
-                value={formData.pincode}
-                onChange={(e) => setFormData({ ...formData, pincode: e.target.value })}
+                name="pinCode"
+                value={formData.pinCode}
+                onChange={(e) => setFormData({ ...formData, pinCode: e.target.value })}
                 required
               />
             </div>
@@ -280,9 +331,9 @@ const Addcenter = () => {
                 onChange={(e) => setFormData({ ...formData, centerHead: e.target.value })}
                 required
               >
-                <option value="">{formData.centerHead.aygcode}</option>
-                {tlList.map((tl) => (
-                  <option key={tl.id} value={tl.id}>
+                <option value={formData.centerHead}>{formData.centerHead}</option>
+                {tlList.map((tl, index) => (
+                  <option key={tl.id} value={tl.aygcode}>
                     {tl.aygcode}
                   </option>
                 ))}
