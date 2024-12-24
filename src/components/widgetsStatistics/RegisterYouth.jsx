@@ -2,11 +2,12 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { FaUserEdit, FaTrash } from "react-icons/fa";
 import { Modal, Button } from "react-bootstrap";
+import { BarLoader } from "react-spinners";  // Import the HashLoader
 
 const RegisterYouth = () => {
   const [formVisible, setFormVisible] = useState(false);
   const [formData, setFormData] = useState({
-    aygcode: "", 
+    aygcode: "",
     firstName: "",
     lastName: "",
     mobileNumber: 0,
@@ -19,12 +20,15 @@ const RegisterYouth = () => {
     reference: "",
     groupName: "",
     teamLeader: true,
-    center:"",
+    center: "",
   });
   const [editIndex, setEditIndex] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 10;
   const userToken = localStorage.getItem("token");
+
+  const [tableData, setTableData] = useState([]);
+  const [loading, setLoading] = useState(false);  
 
   // useEffect(() => {
   //   const savedData = localStorage.getItem("youthData");
@@ -37,6 +41,7 @@ const RegisterYouth = () => {
 
   useEffect(() => {
     const fetchYouthData = async () => {
+      setLoading(true);  
       try {
         const response = await axios.get(
           `${import.meta.env.VITE_SOME_KEY}/API/V1/GET_ALL_YOUTHS`,
@@ -50,6 +55,8 @@ const RegisterYouth = () => {
         localStorage.setItem("youthData", JSON.stringify(response.data));
       } catch (error) {
         console.error("Error fetching youth data:", error);
+      } finally {
+        setLoading(false);  
       }
     };
 
@@ -60,10 +67,6 @@ const RegisterYouth = () => {
     }
   }, [userToken]);
 
-  
-  const [tableData, setTableData] = useState([]);
-
-  
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -82,7 +85,7 @@ const RegisterYouth = () => {
 
   const registerYouth = async () => {
     if (!validateForm()) return;
-
+    setLoading(true); 
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_SOME_KEY}/API/V1/REGISTER_YOUTH`,
@@ -96,12 +99,14 @@ const RegisterYouth = () => {
       );
       console.log("Youth registered successfully", response);
       setTableData([...tableData, formData]);
-      localStorage.setItem("youthData", JSON.stringify([...tableData, formData])); // Update localStorage
+      localStorage.setItem("youthData", JSON.stringify([...tableData, formData])); 
       alert("Youth registered successfully!");
       resetForm();
     } catch (error) {
       console.error("Error during registration:", error);
       alert("Failed to register youth. Please try again.");
+    } finally {
+      setLoading(false); 
     }
   };
 
@@ -121,7 +126,7 @@ const RegisterYouth = () => {
       reference: "",
       groupName: "",
       teamLeader: true,
-      center:"",
+      center: "",
     });
     setFormVisible(false); 
   };
@@ -174,6 +179,12 @@ const RegisterYouth = () => {
         </Modal.Footer>
       </Modal>
 
+      {loading && (
+        <div className="d-flex justify-content-center align-items-center my-5">
+          <BarLoader color={"blue"} loading={loading} size={50} />
+        </div>
+      )}
+
       <div className="table-responsive">
         <table className="table table-bordered table-hover">
           <thead className="table-secondary text-center text-white">
@@ -213,7 +224,7 @@ const RegisterYouth = () => {
                 <td>{data.reference}</td>
                 <td>{data.groupName}</td>
                 <td>{data.teamLeader ? "Yes" : "No"}</td>
-                <td>{data.center?.name || 'Not available' }</td>
+                <td>{data.center?.name || 'Not available'}</td>
                 <td className="text-center d-flex">
                   <button
                     className="btn btn-warning btn-sm me-2"
