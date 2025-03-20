@@ -3,7 +3,7 @@ export const menuList = [
         id: 0,
         name: "Centers",
         path: "/home/centers",
-        icon: 'feather-map-pin',
+        // icon: 'feather-map-pin',
         dropdownMenu: [
             
            
@@ -13,7 +13,7 @@ export const menuList = [
         id: 1,
         name: "Youths",
         path: "/home/youths/register-youth",
-        icon: 'feather-cast',
+        // icon: 'feather-cast',
         dropdownMenu: [
             
            
@@ -22,138 +22,70 @@ export const menuList = [
     },
     {
         id: 2,
-        name: "applications",
-        path: '#',
-        icon: 'feather-send',
+        name: "Calender",
+        path: '/home/calender',
+        // icon: 'feather-send',
         dropdownMenu: [
-            {
-                id: 1,
-                name: "Chat",
-                path: "/home/applications/chat",
-                subdropdownMenu: false
-            },
-            {
-                id: 2,
-                name: "Email",
-                path: "/home/applications/email",
-                subdropdownMenu: false
-            },
-            {
-                id: 3,
-                name: "Tasks",
-                path: "/home/applications/tasks",
-                subdropdownMenu: false
-            },
-            {
-                id: 4,
-                name: "Notes",
-                path: "/home/applications/notes",
-                subdropdownMenu: false
-            },
-            {
-                id: 5,
-                name: "Storage",
-                path: "/home/applications/storage",
-                subdropdownMenu: false
-            },
-            {
-                id: 6,
-                name: "Calender",
-                path: "/home/applications/calender",
-                subdropdownMenu: false
-            },
+            
         ]
     },
-    {
-        id: 3,
-        name: "proposal",
-        path: "#",
-        icon: 'feather-sign',
-        dropdownMenu: [
-            {
-                id: 1,
-                name: "Proposal",
-                path: "/home/proposal/list",
-                subdropdownMenu: false
-            },
-            {
-                id: 2,
-                name: "Proposal View",
-                path: "/home/proposal/view",
-                subdropdownMenu: false
-            },
-            {
-                id: 3,
-                name: "Proposal Edit",
-                path: "/home/proposal/edit",
-                subdropdownMenu: false
-            },
-            {
-                id: 4,
-                name: "Proposal Create",
-                path: "/home/proposal/create",
-                subdropdownMenu: false
-            },
+    // {
+    //     id: 3,
+    //     name: "proposal",
+    //     path: "#",
+    //     icon: 'feather-sign',
+    //     dropdownMenu: [
+    //         {
+    //             id: 1,
+    //             name: "Proposal",
+    //             path: "/home/proposal/list",
+    //             subdropdownMenu: false
+    //         },
+    //         {
+    //             id: 2,
+    //             name: "Proposal View",
+    //             path: "/home/proposal/view",
+    //             subdropdownMenu: false
+    //         },
+    //         {
+    //             id: 3,
+    //             name: "Proposal Edit",
+    //             path: "/home/proposal/edit",
+    //             subdropdownMenu: false
+    //         },
+    //         {
+    //             id: 4,
+    //             name: "Proposal Create",
+    //             path: "/home/proposal/create",
+    //             subdropdownMenu: false
+    //         },
 
-        ],
-    },
+    //     ],
+    // },
     {
         id: 4,
-        name: "payment",
-        path: "#",
-        icon: 'feather-dollar-sign',
+        name: "Donation",
+        path: "/home/donation",
+        // icon: 'feather-dollar-sign',
         dropdownMenu: [
-            {
-                id: 1,
-                name: "Payment",
-                path: "/home/payment/list",
-                subdropdownMenu: false
-            },
-            {
-                id: 2,
-                name: "Invoice View",
-                path: "/home/payment/view",
-                subdropdownMenu: false
-            },
-            {
-                id: 4,
-                name: "Invoice Create",
-                path: "/home/payment/create",
-                subdropdownMenu: false
-            }
+            
+            
         ]
     },
     {
         id: 5,
-        name: "customers",
-        path: "#",
-        icon: 'feather-users',
+        name: "Task",
+        path: "/home/task",
+        // icon: 'feather-users',
         dropdownMenu: [
-            {
-                id: 1,
-                name: "Customers",
-                path: "/home/customers/list",
-                subdropdownMenu: false
-            },
-            {
-                id: 2,
-                name: "Customers View",
-                path: "/home/customers/view",
-                subdropdownMenu: false
-            },
-            {
-                id: 3,
-                name: "Customers Create",
-                path: "/home/customers/create",
-                subdropdownMenu: false
-            }
+            
         ]
     },
     {
         id: 6,
         name: "leads",
         path: "#",
-        icon: 'feather-alert-circle',
+        // icon: 'feather-alert-circle',
         dropdownMenu: [
             {
                 id: 1,
@@ -179,7 +111,7 @@ export const menuList = [
         id: 7,
         name: "projects",
         path: "#",
-        icon: 'feather-briefcase',
+        // icon: 'feather-briefcase',
         dropdownMenu: [
             {
                 id: 1,
@@ -205,7 +137,7 @@ export const menuList = [
         id: 8,
         name: "widgets",
         path: "#",
-        icon: 'feather-layout',
+        // icon: 'feather-layout',
         dropdownMenu: [
             {
                 id: 1,
@@ -243,7 +175,7 @@ export const menuList = [
         id: 9,
         name: "settings",
         path: "#",
-        icon: 'feather-settings',
+        // icon: 'feather-settings',
         dropdownMenu: [
             {
                 id: 1,
@@ -329,7 +261,7 @@ export const menuList = [
         id: 10,
         name: "authentication",
         path: "#",
-        icon: 'feather-power',
+        // icon: 'feather-power',
         dropdownMenu: [
             {
                 id: 1,
@@ -456,30 +388,30 @@ export const menuList = [
             },
         ]
     },
-    {
-        id: 11,
-        name: "Help Center",
-        path: "#",
-        icon: 'feather-life-buoy',
-        dropdownMenu: [
-            {
-                id: 1,
-                name: "Support",
-                path: "https://themeforest.net/user/theme_ocean",
-                subdropdownMenu: false
-            },
-            {
-                id: 2,
-                name: "KnowledgeBase",
-                path: "/home/help/knowledgebase",
-                subdropdownMenu: false
-            },
-            {
-                id: 3,
-                name: "Documentations",
-                path: "/home/documentations",
-                subdropdownMenu: false
-            }
-        ]
-    },
+    // {
+    //     id: 11,
+    //     name: "Help Center",
+    //     path: "#",
+    //     icon: 'feather-life-buoy',
+    //     dropdownMenu: [
+    //         {
+    //             id: 1,
+    //             name: "Support",
+    //             path: "https://themeforest.net/user/theme_ocean",
+    //             subdropdownMenu: false
+    //         },
+    //         {
+    //             id: 2,
+    //             name: "KnowledgeBase",
+    //             path: "/home/help/knowledgebase",
+    //             subdropdownMenu: false
+    //         },
+    //         {
+    //             id: 3,
+    //             name: "Documentations",
+    //             path: "/home/documentations",
+    //             subdropdownMenu: false
+    //         }
+    //     ]
+    // },
 ]

@@ -1,169 +1,203 @@
-import React, { memo, useEffect, useState } from 'react'
-import Table from '@/components/shared/table/Table';
-import { FiAlertOctagon, FiArchive, FiClock, FiEdit3, FiEye, FiMoreHorizontal, FiMoreVertical, FiPrinter, FiSend, FiTrash2 } from 'react-icons/fi'
-import Dropdown from '@/components/shared/Dropdown';
-import SelectDropdown from '@/components/shared/SelectDropdown';
-import Select from 'react-select'
-import { Link } from 'react-router-dom';
-import { customersTableData } from '@/utils/fackData/customersTableData';
-
-
-const actions = [
-    { label: "Edit", icon: <FiEdit3 /> },
-    { label: "Print", icon: <FiPrinter /> },
-    { label: "Remind", icon: <FiClock /> },
-    { type: "divider" },
-    { label: "Archive", icon: <FiArchive /> },
-    { label: "Report Spam", icon: <FiAlertOctagon />, },
-    { type: "divider" },
-    { label: "Delete", icon: <FiTrash2 />, },
-];
-
-const TableCell = memo(({ options, defaultSelect }) => {
-    const [selectedOption, setSelectedOption] = useState(null);
-
-    return (
-        <SelectDropdown
-            options={options}
-            defaultSelect={defaultSelect}
-            selectedOption={selectedOption}
-            onSelectOption={(option) => setSelectedOption(option)}
-        />
-    );
-});
-
-
+import React, { useState } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { FaTasks, FaUser, FaBell, FaCheckCircle, FaSpinner } from "react-icons/fa";
 
 const CustomersTable = () => {
+  // State for managing tasks and volunteers
+  const [tasks, setTasks] = useState([]);
+  const [taskTitle, setTaskTitle] = useState("");
+  const [taskDescription, setTaskDescription] = useState("");
+  const [assignedVolunteer, setAssignedVolunteer] = useState("");
+  const [volunteers] = useState([
+    { id: 1, name: "Rohit Ranjvan" },
+    { id: 2, name: "Shubham Jaiswal" },
+    { id: 3, name: "Aditya Sahani" },
+    { id: 4, name: "Rajesh Pawar" },
+    { id: 5, name: "Sarthak Khandekr" },
+    { id: 6, name: "Aditya Katkar" },
+    { id: 7, name: "Haresh Shingare" },
+    { id: 8, name: "Yogesh Mahapade" },
+  ]);
 
-    const columns = [
-        {
-            accessorKey: 'id',
-            header: ({ table }) => {
-                const checkboxRef = React.useRef(null);
+  // Function to handle task submission
+  const handleTaskSubmit = (e) => {
+    e.preventDefault();
+    if (!taskTitle || !taskDescription || !assignedVolunteer) {
+      alert("Please fill all fields and select a volunteer!");
+      return;
+    }
 
-                useEffect(() => {
-                    if (checkboxRef.current) {
-                        checkboxRef.current.indeterminate = table.getIsSomeRowsSelected();
-                    }
-                }, [table.getIsSomeRowsSelected()]);
+    const newTask = {
+      id: tasks.length + 1,
+      title: taskTitle,
+      description: taskDescription,
+      assignedVolunteer,
+      status: "Pending",
+    };
 
-                return (
-                    <input
-                        type="checkbox"
-                        className="custom-table-checkbox"
-                        ref={checkboxRef}
-                        checked={table.getIsAllRowsSelected()}
-                        onChange={table.getToggleAllRowsSelectedHandler()}
-                    />
-                );
-            },
-            cell: ({ row }) => (
-                <input
-                    type="checkbox"
-                    className="custom-table-checkbox"
-                    checked={row.getIsSelected()}
-                    disabled={!row.getCanSelect()}
-                    onChange={row.getToggleSelectedHandler()}
-                />
-            ),
-            meta: {
-                headerClassName: 'width-30',
-            },
-        },
+    // Update tasks list
+    setTasks([...tasks, newTask]);
 
-        {
-            accessorKey: 'customer',
-            header: () => 'Customer',
-            cell: (info) => {
-                const roles = info.getValue();
-                return (
-                    <a href="#" className="hstack gap-3">
-                        {
-                            roles?.img ?
-                                <div className="avatar-image avatar-md">
-                                    <img src={roles?.img} alt="" className="img-fluid" />
-                                </div>
-                                :
-                                <div className="text-white avatar-text user-avatar-text avatar-md">{roles?.name.substring(0, 1)}</div>
-                        }
-                        <div>
-                            <span className="text-truncate-1-line">{roles?.name}</span>
-                        </div>
-                    </a>
-                )
-            }
-        },
-        {
-            accessorKey: 'email',
-            header: () => 'Email',
-            cell: (info) => <a href="apps-email.html">{info.getValue()}</a>
-        },
-        {
-            accessorKey: 'group',
-            header: () => 'Group',
-            cell: (info) => {
-                const x = info.getValue()
-                return (
-                    <Select
-                        defaultValue={x.defaultSelect}
-                        isMulti
-                        name="tags"
-                        options={x.tags}
-                        className="basic-multi-select"
-                        classNamePrefix="select"
-                        hideSelectedOptions={false}
-                        isSearchable={false}
-                        // onChange={(e) => console.log(e)}
-                        formatOptionLabel={tags => (
-                            <div className="user-option d-flex align-items-center gap-2">
-                                <span style={{ marginTop: "1px", backgroundColor: `${tags.color}` }} className={`wd-7 ht-7 rounded-circle`}></span>
-                                <span>{tags.label}</span>
-                            </div>
-                        )}
-                    />
-                )
-            }
-        },
-        {
-            accessorKey: 'phone',
-            header: () => 'Phone',
-            cell: (info) => <a href="tel:">{info.getValue()}</a>
-            // meta: {
-            //     className: "fw-bold text-dark"
-            // }
-        },
-        {
-            accessorKey: 'date',
-            header: () => 'Date',
-        },
-        {
-            accessorKey: 'status',
-            header: () => 'Status',
-            cell: (info) => <TableCell options={info?.getValue().status} defaultSelect={info?.getValue().defaultSelect} />
-        },
-        {
-            accessorKey: 'actions',
-            header: () => "Actions",
-            cell: info => (
-                <div className="hstack gap-2 justify-content-end">
-                    <Link to="/customers/view" className="avatar-text avatar-md">
-                        <FiEye />
-                    </Link>
-                    <Dropdown dropdownItems={actions} triggerClass='avatar-md' triggerPosition={"0,21"} triggerIcon={<FiMoreHorizontal />} />
-                </div>
-            ),
-            meta: {
-                headerClassName: 'text-end'
-            }
-        },
-    ]
+    // Send notification to the assigned volunteer
+    alert(`Notification sent to ${assignedVolunteer}: New task assigned - "${taskTitle}"`);
 
-    return (
-        <div>
-            <Table data={customersTableData} columns={columns} />
+    // Clear form fields
+    setTaskTitle("");
+    setTaskDescription("");
+    setAssignedVolunteer("");
+  };
+
+  // Function to update task status
+  const updateTaskStatus = (taskId, newStatus) => {
+    const updatedTasks = tasks.map((task) =>
+      task.id === taskId ? { ...task, status: newStatus } : task
+    );
+    setTasks(updatedTasks);
+  };
+
+  return (
+    <div className="container mt-5">
+      {/* Header */}
+      <div className="text-center mb-5">
+        <h1 className="display-4 fw-bold text-gradient">
+          <FaTasks className="me-2" />
+          Task Management System
+        </h1>
+        <p className="lead text-muted">Assign tasks to volunteers and track progress</p>
+      </div>
+
+      {/* Task Creation Form */}
+      <div className="card shadow-lg mb-4 border-0 animate__animated animate__fadeIn">
+        <div className="card-header bg-gradient-primary text-white">
+          <h5 className="mb-0">
+            <FaTasks className="me-2" />
+            Create New Task
+          </h5>
         </div>
-    )
-}
+        <div className="card-body">
+          <form onSubmit={handleTaskSubmit}>
+            <div className="mb-3">
+              <label htmlFor="taskTitle" className="form-label">
+                Task Title
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="taskTitle"
+                value={taskTitle}
+                onChange={(e) => setTaskTitle(e.target.value)}
+                required
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="taskDescription" className="form-label">
+                Task Description
+              </label>
+              <textarea
+                className="form-control"
+                id="taskDescription"
+                rows="3"
+                value={taskDescription}
+                onChange={(e) => setTaskDescription(e.target.value)}
+                required
+              ></textarea>
+            </div>
+            <div className="mb-3">
+              <label htmlFor="assignedVolunteer" className="form-label">
+                Assign to Volunteer
+              </label>
+              <select
+                className="form-select"
+                id="assignedVolunteer"
+                value={assignedVolunteer}
+                onChange={(e) => setAssignedVolunteer(e.target.value)}
+                required
+              >
+                <option value="">Select Volunteer</option>
+                {volunteers.map((volunteer) => (
+                  <option key={volunteer.id} value={volunteer.name}>
+                    {volunteer.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <button type="submit" className="btn btn-primary w-100">
+              Create Task
+            </button>
+          </form>
+        </div>
+      </div>
 
-export default CustomersTable
+      {/* Task Records */}
+      <div className="card shadow-lg border-0 animate__animated animate__fadeIn">
+        <div className="card-header bg-gradient-info text-white">
+          <h5 className="mb-0">
+            <FaTasks className="me-2" />
+            Task Records
+          </h5>
+        </div>
+        <div className="card-body">
+          {tasks.length === 0 ? (
+            <p className="text-muted text-center">No tasks created yet.</p>
+          ) : (
+            <table className="table table-hover">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Title</th>
+                  <th>Description</th>
+                  <th>Assigned Volunteer</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {tasks.map((task) => (
+                  <tr key={task.id}>
+                    <td>{task.id}</td>
+                    <td>{task.title}</td>
+                    <td>{task.description}</td>
+                    <td>{task.assignedVolunteer}</td>
+                    <td>
+                      {task.status === "Pending" && (
+                        <span className="badge bg-warning">
+                          <FaSpinner className="me-1" />
+                          Pending
+                        </span>
+                      )}
+                      {task.status === "In Progress" && (
+                        <span className="badge bg-primary">
+                          <FaSpinner className="me-1" />
+                          In Progress
+                        </span>
+                      )}
+                      {task.status === "Completed" && (
+                        <span className="badge bg-success">
+                          <FaCheckCircle className="me-1" />
+                          Completed
+                        </span>
+                      )}
+                    </td>
+                    <td>
+                      <select
+                        className="form-select form-select-sm"
+                        value={task.status}
+                        onChange={(e) => updateTaskStatus(task.id, e.target.value)}
+                      >
+                        <option value="Pending">Pending</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Completed">Completed</option>
+                      </select>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default CustomersTable;

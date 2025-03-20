@@ -123,7 +123,7 @@ export const router = createBrowserRouter([
                 element: <ProposalCreate />
             },
             {
-                path: "/home/payment/list",
+                path: "/home/donation",
                 element: <PaymentList />
             },
             {
@@ -135,7 +135,7 @@ export const router = createBrowserRouter([
                 element: <PaymentCreate />
             },
             {
-                path: "/home/customers/list",
+                path: "/home/task",
                 element: <CustomersList />
             },
             {
@@ -218,7 +218,7 @@ export const router = createBrowserRouter([
                 element: <AppsNotes />
             },
             {
-                path: "/home/applications/calender",
+                path: "/home/calender",
                 element: <AppsCalender />
             },
             {

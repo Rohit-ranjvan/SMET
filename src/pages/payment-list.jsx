@@ -7,15 +7,15 @@ import Footer from '@/components/shared/Footer'
 const PaymentList = () => {
     return (
         <>
-            <PageHeader>
+            {/* <PageHeader>
                 <PaymentHeader />
-            </PageHeader>
+            </PageHeader> */}
             <div className='main-content'>
                 <div className='row'>
                     <PaymentTable />
                 </div>
             </div>
-            <Footer/>
+            {/* <Footer/> */}
         </>
     )
 }

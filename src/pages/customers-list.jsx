@@ -7,15 +7,15 @@ import Footer from '@/components/shared/Footer'
 const CustomersList = () => {
     return (
         <>
-            <PageHeader>
+            {/* <PageHeader>
                 <CustomersHeader />
-            </PageHeader>
+            </PageHeader> */}
             <div className='main-content'>
                 <div className='row'>
                     <CustomersTable />
                 </div>
             </div>
-            <Footer />
+            {/* <Footer /> */}
         </>
     )
 }
